@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">FTX</string>
+
+    <string name="base_select">부대 설정하기</string>
+    <string name="base_select_information">내 부대를 설정하고 \n연병장에 집결하세요!</string>
+
+    <string name="start">집결하기</string>
+
+    <string name="base_find_query_hint">내 부대 이름으로 검색</string>
+
+    <string name="base_list">부대 목록</string>
+
+    <string name="login_registration">로그인/회원가입</string>
+    <string name="login">로그인</string>
+    <string name="registration">회원가입</string>
+
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+
+    <string name="find_password">비밀번호 찾기</string>
+
+</resources>

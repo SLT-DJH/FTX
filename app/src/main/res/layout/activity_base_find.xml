@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/sv_base_find"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        app:iconifiedByDefault="false"
+        app:queryHint="@string/base_find_query_hint" >
+
+    </androidx.appcompat.widget.SearchView>
+
+    <Button
+        android:id="@+id/btn_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="skip" />
+
+    <TextView
+        android:id="@+id/tv_base_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/base_list"
+        android:textColor="@color/DarkGrey"
+        android:textSize="15sp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="20dp"/>
+
+    <ListView
+        android:id="@+id/lv_base_list"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
