@@ -16,6 +16,7 @@
 
     <string name="email">이메일</string>
     <string name="password">비밀번호</string>
+    <string name="password_confirm">비밀번호 확인</string>
 
     <string name="find_password">비밀번호 찾기</string>
 
@@ -25,5 +26,12 @@
     <string name="profile">프로필</string>
 
     <string name="title">제목</string>
+
+    <string name="request_email_pw">모든 사항을 입력해주세요.</string>
+    <string name="request_pw_confirm">비밀번호를 다시 확인해주세요.</string>
+    <string name="registration_succeed">회원가입이 완료되었습니다.</string>
+    <string name="registration_failed">회원가입에 실패하였습니다..</string>
+
+    <string name="users">Users</string>
 
 </resources>
