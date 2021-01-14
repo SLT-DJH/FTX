@@ -2,6 +2,7 @@ package com.jinhyun.ftx
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -13,14 +14,30 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    val TAG = "MainActivity"
     val db = FirebaseFirestore.getInstance()
     val mAuth = FirebaseAuth.getInstance()
     val userref = db.collection("Users").document(mAuth.uid.toString())
     var userBase = ""
+    var userName = ""
+    var userImage = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        userref.addSnapshotListener { value, error ->
+            if (error != null) {
+                Log.d(TAG, "Listen failed. $error")
+                return@addSnapshotListener
+            }
+
+            if(value != null && value.exists()){
+                userName = value.get("name").toString()
+            }else{
+                Log.d(TAG, "Current data: null")
+            }
+        }
 
         if (userBase == ""){
             progressBar.visibility = View.VISIBLE
@@ -83,7 +100,11 @@ class MainActivity : AppCompatActivity() {
                 iv_profile.setImageResource(R.drawable.profile_white)
             }
             3 -> {
-                ft.replace(R.id.container, ProfileFragment()).commit()
+                ft.replace(R.id.container, ProfileFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("name", userName)
+                    }
+                }).commit()
                 iv_mission.setImageResource(R.drawable.assignment_white)
                 iv_group.setImageResource(R.drawable.group_white)
                 iv_chat.setImageResource(R.drawable.chat_white)
