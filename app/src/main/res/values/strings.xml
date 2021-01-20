@@ -64,4 +64,35 @@
     <string name="change_complete">수정이 완료되었습니다.</string>
     <string name="change_failed">수정에 실패하였습니다..</string>
 
+    <string name="category">카테고리</string>
+    <string name="update_date">업뎃시간</string>
+    <string name="post_content">포스팅 내용</string>
+
+    <string name="like">좋아요</string>
+    <string name="comment">댓글쓰기</string>
+
+    <string name="done">완료</string>
+
+    <string name="register_new_mission">새로운 미션 등록하기</string>
+
+    <string name="price">가격</string>
+    <string name="won">₩</string>
+
+    <string name="request_content">제시할 미션 내용을 작성해주세요.</string>
+
+    <string name="errand">심부름</string>
+    <string name="laundry">세탁</string>
+    <string name="delivery">배달</string>
+    <string name="cleaning">청소</string>
+    <string name="lesson">레슨</string>
+    <string name="teach">과외</string>
+    <string name="consult">상담</string>
+    <string name="etc">기타</string>
+
+    <string name="pick_mission_date">수행날짜 선택</string>
+    <string name="pick_mission_time">수행시간 선택</string>
+
+    <string name="place">장소</string>
+
+
 </resources>

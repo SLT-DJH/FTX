@@ -1,14 +1,19 @@
 package com.jinhyun.ftx.fragment
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jinhyun.ftx.NewMissionActivity
 import com.jinhyun.ftx.R
 import com.jinhyun.ftx.adapter.MissionAdapter
 import com.jinhyun.ftx.data.MissionData
+import kotlinx.android.synthetic.main.custom_actionbar.*
+import kotlinx.android.synthetic.main.custom_actionbar.view.*
 import kotlinx.android.synthetic.main.fragment_mission.*
 import kotlinx.android.synthetic.main.fragment_mission.view.*
 
@@ -19,7 +24,9 @@ class MissionFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_mission, container, false)
 
-        view.tv_title.text = arguments?.getString("base")
+        activity?.findViewById<TextView>(R.id.toolbar_title)?.text = arguments?.getString("base")
+
+        setHasOptionsMenu(true)
 
         missionList.add(
             MissionData("test", "심부름 구합니다.",
@@ -35,7 +42,35 @@ class MissionFragment : Fragment() {
         view.missionRecyclerView.adapter = mAdapter
         view.missionRecyclerView.layoutManager = LinearLayoutManager(activity!!.applicationContext)
 
+        view.btn_mission_create.setOnClickListener {
+            val intent = Intent(activity, NewMissionActivity::class.java)
+            startActivity(intent)
+        }
+
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater?.inflate(R.menu.menu_mission_bar,menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        when(item?.itemId){
+            R.id.mission_search -> {
+                return true
+            }
+            R.id.mission_tune -> {
+                return true
+            }
+            R.id.mission_alert -> {
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun addToList(missionImage : String, missionText : String, placeText : String,

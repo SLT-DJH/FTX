@@ -67,6 +67,7 @@ class ProfileEditActivity : AppCompatActivity() {
 
                 userref.update("name", et_edit_profile_name.text.toString()).addOnSuccessListener {
                     if(imageUri != ""){
+                        //이미지 변경이 있을 시
                         storageRef.putFile(Uri.parse(imageUri)).addOnSuccessListener {
                             progressbar_edit_profile.visibility = View.INVISIBLE
                             Toast.makeText(this,R.string.change_complete,Toast.LENGTH_SHORT).show()
@@ -75,6 +76,7 @@ class ProfileEditActivity : AppCompatActivity() {
                             Toast.makeText(this,R.string.change_failed,Toast.LENGTH_SHORT).show()
                         }
                     }else{
+                        //이름만 바꿀 시
                         progressbar_edit_profile.visibility = View.INVISIBLE
                         Toast.makeText(this,R.string.change_complete,Toast.LENGTH_SHORT).show()
                     }

@@ -8,11 +8,14 @@
     android:background="@color/White"
     tools:context=".MainActivity">
 
+    <include
+        layout="@layout/custom_actionbar"/>
 
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="?android:attr/actionBarSize">
 
     </FrameLayout>
 

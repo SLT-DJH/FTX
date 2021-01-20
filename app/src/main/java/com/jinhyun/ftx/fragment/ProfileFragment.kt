@@ -5,11 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
@@ -34,6 +35,10 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
+        activity?.findViewById<TextView>(R.id.toolbar_title)?.setText(R.string.profile)
+
+        setHasOptionsMenu(true)
+
         view.tv_profile_name.text = arguments?.getString("name")
 
         //retrieve profile image
@@ -44,13 +49,6 @@ class ProfileFragment : Fragment() {
                 Glide.with(it).load(task).into(profileImage)
                 Log.d(TAG, "result : $task")
             }
-        }
-
-        view.iv_profile_setting.setOnClickListener {
-            val intent = Intent(activity, ProfileEditActivity::class.java)
-            intent.putExtra("name", arguments?.getString("name"))
-
-            startActivity(intent)
         }
 
         view.logout_layout.setOnClickListener {
@@ -65,6 +63,27 @@ class ProfileFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater?.inflate(R.menu.menu_profile_bar, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            R.id.profile_setting -> {
+                val intent = Intent(activity, ProfileEditActivity::class.java)
+                intent.putExtra("name", arguments?.getString("name"))
+
+                startActivity(intent)
+
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun showDeleteAlert(){
