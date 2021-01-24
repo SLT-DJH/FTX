@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.jinhyun.ftx.dialog.CategoryDialog
@@ -78,6 +79,7 @@ class NewMissionActivity : AppCompatActivity() {
         }
 
         tv_new_mission_done.setOnClickListener {
+            LN_new_mission_progress.visibility = View.VISIBLE
             title = et_new_mission_title.text.toString()
             price = et_new_mission_price.text.toString()
             place = et_new_mission_place.text.toString()
@@ -86,11 +88,13 @@ class NewMissionActivity : AppCompatActivity() {
             if(category == "" || title == "" || place == "" || price == "" || date == "" ||
                 time == "" || missionContent == ""){
                 Toast.makeText(this, R.string.request_email_pw, Toast.LENGTH_SHORT).show()
+                LN_new_mission_progress.visibility = View.INVISIBLE
                 return@setOnClickListener
             }
 
             Toast.makeText(this, "잘 하셨습니다!", Toast.LENGTH_SHORT).show()
-            onBackPressed()
+            LN_new_mission_progress.visibility = View.INVISIBLE
+            finish()
         }
 
     }

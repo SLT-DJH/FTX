@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="600dp"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="군 장병 SNS 활용 길라잡이"
+                android:textColor="@color/Black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/Grey"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="○ 본 길라잡이는 군 장병들의 소셜 네트워크 이용 시 군사보안을 유지하고 올바른 SNS 사용문화를 확립하는데 참고할 수 있는 권고사항을 제공함을 목적으로 한다."
+                    android:textColor="@color/Black"
+                    android:textSize="10sp"
+                    android:layout_marginBottom="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="○ 적용 대상\n 1. 모든 군 장병\n 2. 사관생도, 사관후보생, 준사관후보생, 부사관 후보생\n 3. 소집되어 군에 복무하는 예비역 및 보충역\n 4. 군무원"
+                    android:textColor="@color/Black"
+                    android:textSize="10sp"
+                    android:layout_marginBottom="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="○ 적용 대상\n 1. 모든 군 장병\n 2. 사관생도, 사관후보생, 준사관후보생, 부사관 후보생\n 3. 소집되어 군에 복무하는 예비역 및 보충역\n 4. 군무원"
+                    android:textColor="@color/Black"
+                    android:textSize="10sp"
+                    android:layout_marginBottom="10dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="□ SNS 기본 원칙"
+                android:textColor="@color/Black"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1. 군인의 품위를 유지하라"
+                    android:textColor="@color/Black"
+                    android:textSize="11sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SNS 상에서 군인의 이미지를 훼손할 수 있는 욕설, 가혹행위, 성매매 관련 내용을 게시하거나, 소속부대 및 상관(동료)을 비하/음해하는 활동을 하지 않아야 한다."
+                    android:textColor="@color/Black"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2. SNS의 공개성과 개방성을 주의하라"
+                    android:textColor="@color/Black"
+                    android:textSize="11sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SNS에 게시되는 글, 사진, 영상은 빠르게 공유되어 누구나 볼 수 있고, 한번 게시되면 삭제하더라도 타인에 의해 온라인 상에 계속 남을 수 있으므로 활동에 대한 책임감을 가져야 한다."
+                    android:textColor="@color/Black"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="3. 개인정보를 보호하라"
+                    android:textColor="@color/Black"
+                    android:textSize="11sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SNS 특성 상 개인정보의 입력이 필수적이지만, 군인의 경우 개인정보가 유출되었을 때 적에 의한 공격 위험이 있으므로, 장병 스스로 자신의 개인정보를 보호해햐 한다."
+                    android:textColor="@color/Black"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="4. 인터넷 상의 사회 규범을 준수하라"
+                    android:textColor="@color/Black"
+                    android:textSize="11sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="도덕적 규범에 어긋나는 행동과 법에서 금지하고 있는 불법행위를 SNS 상에서 하지 않아야 한다."
+                    android:textColor="@color/Black"
+                    android:textSize="10sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="* 예 : 남녀차별, 성희롱, 허위사실 유포, 모욕, 명예훼손, 개인정보 도용, 스팸 발송, 저작권 침해, 음람물 유통, 불법 촬영 영상, 악성코드 배포 등"
+                    android:textColor="@color/green2"
+                    android:textSize="9sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="5. 군사보안을 지켜라"
+                    android:textColor="@color/Black"
+                    android:textSize="11sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="『군사기밀 보허법』 등에서 군사보안 위협의 가능성을 가진 정보나 군사비밀과 관련된 용어 사용 시 군사비밀이 간접적으로 유출되지 않도록 주의해야 한다."
+                    android:textColor="@color/Black"
+                    android:textSize="10sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="* 비밀로 분류되는 사안 : 군사 작전, 부대 편성, 군 인사, 군사 훈련, 군부대 위치, 군사 장비의 제원 등"
+                    android:textColor="@color/green2"
+                    android:textSize="9sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="6. 군법을 준수하라"
+                    android:textColor="@color/Black"
+                    android:textSize="11sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SNS 사용 시에도 『군인의 지위 및 복무에 관한 기본법』,『군형법』 등이 적용됨을 유의하고, 특히 군인으로서 금지된 정치적 활동, 집단행위 등을 SNS 상에서 하지 않아야 한다."
+                    android:textColor="@color/Black"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="7. 공과 사를 구분하여 행동하라"
+                    android:textColor="@color/Black"
+                    android:textSize="11sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SNS 상에서 개인적인 의견이 군의 공식의견처럼 보이지 않도록 확실히 의사를 표현해야 한다. 특히, 업무시간 중에 개인적인 SNS를 이용하는 것은 의도하지 않은 오해를 가져올 수 있으므로 주의한다."
+                    android:textColor="@color/Black"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

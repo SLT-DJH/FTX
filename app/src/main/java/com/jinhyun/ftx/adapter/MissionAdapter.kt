@@ -35,7 +35,16 @@ class MissionAdapter(val context: Context, val missionList : ArrayList<MissionDa
         val missionPrice = itemView.findViewById<TextView>(R.id.tv_price)
 
         fun bind(mission : MissionData, context: Context){
-            missionImage.setImageResource(R.drawable.delivery)
+            when(mission.missionImage){
+                context.getString(R.string.errand) -> missionImage.setImageResource(R.drawable.errand_icon)
+                context.getString(R.string.laundry) -> missionImage.setImageResource(R.drawable.laundry_icon)
+                context.getString(R.string.delivery) -> missionImage.setImageResource(R.drawable.delivery_icon)
+                context.getString(R.string.cleaning) -> missionImage.setImageResource(R.drawable.cleaning_icon)
+                context.getString(R.string.lesson) -> missionImage.setImageResource(R.drawable.lesson_icon)
+                context.getString(R.string.teach) -> missionImage.setImageResource(R.drawable.teach_icon)
+                context.getString(R.string.consult) -> missionImage.setImageResource(R.drawable.consult_icon)
+                context.getString(R.string.etc) -> missionImage.setImageResource(R.drawable.etc_icon)
+            }
             missionName.text = mission.missionText
             missionPrice.text = mission.priceText
             missionDate.text = mission.dateText

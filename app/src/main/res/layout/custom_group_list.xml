@@ -58,7 +58,8 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginRight="10dp"
-                app:cardCornerRadius="81dp">
+                app:cardCornerRadius="81dp"
+                app:cardElevation="0dp">
 
                 <ImageView
                     android:id="@+id/iv_post_profile_image"

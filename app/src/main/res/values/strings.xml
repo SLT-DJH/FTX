@@ -94,5 +94,26 @@
 
     <string name="place">장소</string>
 
+    <string name="register_new_post">부대생활 글쓰기</string>
+
+    <string name="request_post_content">부대생활 관련된 질문이나 이야기를 적어보세요.</string>
+
+
+    <string name="check_sns_principle">군 장병 SNS 이용 기본 원칙을 준수합니다.</string>
+
+    <string name="view_sns_principle">지침 확인</string>
+
+    <string name="lost">분실센터</string>
+    <string name="question">부대 질문</string>
+    <string name="routine">일상</string>
+    <string name="news">부대 소식</string>
+    <string name="hobby">취미 및 자기계발</string>
+    <string name="zoo">부대 동물원</string>
+    <string name="plant">부대 식물원</string>
+    <string name="decoration">생활관 및 숙소 꾸미기</string>
+    <string name="health">건강과 운동</string>
+    <string name="vacation">휴가</string>
+
+    <string name="request_check_sns_principle">군 장병 SNS 이용 기본원칙 준수에 동의해주세요.</string>
 
 </resources>

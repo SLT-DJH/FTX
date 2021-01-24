@@ -1,5 +1,6 @@
 package com.jinhyun.ftx.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jinhyun.ftx.NewPostActivity
 import com.jinhyun.ftx.R
 import com.jinhyun.ftx.adapter.GroupAdapter
 import com.jinhyun.ftx.data.GroupData
@@ -36,6 +38,11 @@ class GroupFragment : Fragment() {
         val lm = LinearLayoutManager(activity!!.applicationContext)
         view.groupRecyclerView.layoutManager = lm
         view.groupRecyclerView.setHasFixedSize(true)
+
+        view.btn_post_create.setOnClickListener {
+            val intent = Intent(activity, NewPostActivity::class.java)
+            startActivity(intent)
+        }
 
         return view
     }

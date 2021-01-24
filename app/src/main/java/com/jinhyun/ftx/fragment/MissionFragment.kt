@@ -29,11 +29,11 @@ class MissionFragment : Fragment() {
         setHasOptionsMenu(true)
 
         missionList.add(
-            MissionData("test", "심부름 구합니다.",
+            MissionData(getString(R.string.errand), "심부름 구합니다.",
                 "BOQ 11동 212호", "2021. 1. 10.", "2,000원"))
-        missionList.add(MissionData("test", "배달이 필요합니다. \n정문에서 치킨..",
+        missionList.add(MissionData(getString(R.string.delivery), "배달이 필요합니다. \n정문에서 치킨..",
             "BOQ 11동 201호", "2021. 1. 8.", "3,000원"))
-        missionList.add(MissionData("test", "물건을 옮겨주세요!!",
+        missionList.add(MissionData(getString(R.string.cleaning), "물건을 옮겨주세요!!",
             "창조생활관 2층 9호", "2021. 1. 2.", "5,000원"))
 
         postToList()
@@ -80,8 +80,26 @@ class MissionFragment : Fragment() {
 
     private fun postToList(){
         for (i in 1..30){
-            addToList("test", "심부름 $i", "생활관 ${i}층 ${i}호",
-                "2021. 1. ${i}.", "${i},000원")
+            if (i in 1..8){
+                addToList(getString(R.string.laundry), "심부름 $i", "생활관 ${i}층 ${i}호",
+                    "2021. 1. ${i}.", "${i},000원")
+            }
+            if (i in 9..15){
+                addToList(getString(R.string.lesson), "심부름 $i", "생활관 ${i}층 ${i}호",
+                    "2021. 1. ${i}.", "${i},000원")
+            }
+            if (i in 16..21){
+                addToList(getString(R.string.teach), "심부름 $i", "생활관 ${i}층 ${i}호",
+                    "2021. 1. ${i}.", "${i},000원")
+            }
+            if(i in 22..26){
+                addToList(getString(R.string.consult), "심부름 $i", "생활관 ${i}층 ${i}호",
+                    "2021. 1. ${i}.", "${i},000원")
+            }
+            if(i in 27..30){
+                addToList(getString(R.string.etc), "심부름 $i", "생활관 ${i}층 ${i}호",
+                    "2021. 1. ${i}.", "${i},000원")
+            }
         }
     }
 }
