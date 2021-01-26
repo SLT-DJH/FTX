@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">연병장</string>
 
-    <string name="base_select">부대 설정하기</string>
+    <string name="base_select">부대 설정</string>
     <string name="base_select_information">내 부대를 설정하고 \n연병장에 집결하세요!</string>
+    <string name="ask_base_select">부대를 새로 설정하시겠습니까?</string>
 
     <string name="start">집결하기</string>
 
@@ -115,5 +116,18 @@
     <string name="vacation">휴가</string>
 
     <string name="request_check_sns_principle">군 장병 SNS 이용 기본원칙 준수에 동의해주세요.</string>
+
+    <string name="no_base">검색하신 부대가 없습니다!</string>
+
+    <string name="please_access_info">부대 미 인증 상태입니다!\n클릭하여 부대 인증을 진행해주세요.</string>
+
+    <string name="start_chat">채팅하기</string>
+
+    <string name="base">부대</string>
+    <string name="mission_content">미션 내용</string>
+    <string name="mission_title">미션 제목</string>
+    <string name="mission_place">미션 장소</string>
+    <string name="mission_date">수행 일시</string>
+    <string name="mission_price">미션 금액</string>
 
 </resources>

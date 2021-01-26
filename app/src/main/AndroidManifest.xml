@@ -30,6 +30,7 @@
             android:theme="@style/Base.Theme.AppCompat"/>
         <activity android:name=".NewMissionActivity"/>
         <activity android:name=".NewPostActivity"/>
+        <activity android:name=".SelectedMissionActivity"/>
     </application>
 
 </manifest>

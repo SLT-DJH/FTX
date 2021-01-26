@@ -5,35 +5,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/sv_base_find"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        app:iconifiedByDefault="false"
-        app:queryHint="@string/base_find_query_hint" >
+        android:layout_height="match_parent">
 
-    </androidx.appcompat.widget.SearchView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_skip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="skip" />
+            <SearchView
+                android:id="@+id/sv_base_find"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                app:iconifiedByDefault="false"
+                app:queryHint="@string/base_find_query_hint">
 
-    <TextView
-        android:id="@+id/tv_base_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/base_list"
-        android:textColor="@color/DarkGrey"
-        android:textSize="15sp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginBottom="20dp"/>
+            </SearchView>
 
-    <ListView
-        android:id="@+id/lv_base_list"
-        android:layout_marginLeft="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/tv_base_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/base_list"
+                android:textColor="@color/DarkGrey"
+                android:textSize="15sp" />
+
+            <ListView
+                android:id="@+id/lv_base_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LN_find_base_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/Transparent_Black"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </FrameLayout>
+
 </LinearLayout>

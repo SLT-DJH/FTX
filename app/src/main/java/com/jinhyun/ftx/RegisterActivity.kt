@@ -100,7 +100,8 @@ class RegisterActivity : AppCompatActivity() {
                         "email" to email,
                         "password" to password,
                         "uid" to userId,
-                        "base" to ""
+                        "base" to "",
+                        "access" to false
                     )
                     val storage = FirebaseStorage.getInstance()
                     val storageRef = storage.getReferenceFromUrl("gs://trainingfield-ed0a1.appspot.com")

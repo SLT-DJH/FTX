@@ -12,6 +12,7 @@ import com.jinhyun.ftx.fragment.GroupFragment
 import com.jinhyun.ftx.fragment.MissionFragment
 import com.jinhyun.ftx.fragment.ProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.custom_actionbar.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     var userBase = ""
     var userName = ""
     var userImage = ""
+    var userAcess = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         userref.addSnapshotListener { value, error ->
+
             if (error != null) {
                 Log.d(TAG, "Listen failed. $error")
                 return@addSnapshotListener
@@ -39,8 +42,17 @@ class MainActivity : AppCompatActivity() {
 
             if(value != null && value.exists()){
                 userName = value.get("name").toString()
+                userBase = value.get("base").toString()
+                if (value.get("access") == true){
+                    userAcess = true
+                    Log.d(TAG, "user access true!!")
+                }else{
+                    Log.d(TAG, "user access false!!")
+                }
             }else{
                 Log.d(TAG, "Current data: null")
+
+                progressBar.visibility = View.INVISIBLE
             }
         }
 
@@ -50,10 +62,6 @@ class MainActivity : AppCompatActivity() {
             userref.get().addOnSuccessListener {
                 if(it.data!!.get("base") != ""){
                     userBase = it.data!!.get("base").toString()
-                    setFrag(0)
-                    progressBar.visibility = View.INVISIBLE
-                }else{
-                    userBase = "TEST"
                     setFrag(0)
                     progressBar.visibility = View.INVISIBLE
                 }
@@ -73,6 +81,11 @@ class MainActivity : AppCompatActivity() {
         lay_profile.setOnClickListener {
             setFrag(3)
         }
+    }
+
+    private fun startFragement(base : String){
+        setFrag(0)
+        progressBar.visibility = View.INVISIBLE
     }
 
     private fun setFrag(fragNum : Int) {
@@ -108,6 +121,7 @@ class MainActivity : AppCompatActivity() {
                 ft.replace(R.id.container, ProfileFragment().apply {
                     arguments = Bundle().apply {
                         putString("name", userName)
+                        putBoolean("access", userAcess)
                     }
                 }).commit()
                 iv_mission.setImageResource(R.drawable.assignment_white)

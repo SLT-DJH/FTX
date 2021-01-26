@@ -2,7 +2,9 @@ package com.jinhyun.ftx.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -18,6 +20,8 @@ import kotlinx.android.synthetic.main.fragment_mission.*
 import kotlinx.android.synthetic.main.fragment_mission.view.*
 
 class MissionFragment : Fragment() {
+
+    val TAG = "MissionFragment"
 
     val missionList = arrayListOf<MissionData>()
 
@@ -76,6 +80,10 @@ class MissionFragment : Fragment() {
     private fun addToList(missionImage : String, missionText : String, placeText : String,
                           dateText : String, priceText : String){
         missionList.add(MissionData(missionImage, missionText, placeText, dateText, priceText))
+    }
+
+    private fun clicked(){
+        Log.d(TAG, "clicked title!")
     }
 
     private fun postToList(){
