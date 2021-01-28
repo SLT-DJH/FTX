@@ -9,12 +9,19 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.jinhyun.ftx.dialog.CategoryDialog
 import kotlinx.android.synthetic.main.activity_new_mission.*
 import java.text.DecimalFormat
 import java.util.*
 
 class NewMissionActivity : AppCompatActivity() {
+
+    val db = FirebaseFirestore.getInstance()
+    val mAuth = FirebaseAuth.getInstance()
+    val missionRef = db.collection("Missions")
 
     private val df = DecimalFormat("#,###")
     private var priceResult = ""
@@ -39,13 +46,22 @@ class NewMissionActivity : AppCompatActivity() {
     private var title = ""
     private var place = ""
     private var price = ""
-    private var date = ""
-    private var time = ""
+    private var dateText = ""
+    private var timeText = ""
+    private var year = 0
+    private var month = 0
+    private var day = 0
+    private var hour = 0
+    private var minute = 0
     private var missionContent = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_mission)
+
+        val userBase = intent.getStringExtra("base").toString()
+
+        val itemRef = missionRef.document(userBase).collection("Items")
 
         et_new_mission_price.addTextChangedListener(watcher)
 
@@ -66,15 +82,44 @@ class NewMissionActivity : AppCompatActivity() {
             val cal = Calendar.getInstance()
             DatePickerDialog(this, DatePickerDialog.OnDateSetListener{datePicker, y, m, d ->
                 tv_new_mission_date_pick.text = "$y-${m+1}-$d"
-                date = "$y-${m+1}-$d"
+                dateText = "$y-${m+1}-$d"
+                year = y
+                month = m+1
+                day = d
             }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)).show()
         }
 
         tv_new_mission_time_pick.setOnClickListener {
             val cal = Calendar.getInstance()
             TimePickerDialog(this, TimePickerDialog.OnTimeSetListener{timePicker, h, m ->
-                tv_new_mission_time_pick.text = "$h : $m"
-                time = "$h : $m"
+
+                if(h < 10 || m < 10){
+                    if(h < 10 && m < 10){
+                        tv_new_mission_time_pick.text = "0$h:0$m"
+                        timeText = "0$h:0$m"
+                        hour = h
+                        minute = m
+                    }
+
+                    if(h < 10 && m >= 10){
+                        tv_new_mission_time_pick.text = "0$h:$m"
+                        timeText = "0$h:$m"
+                        hour = h
+                        minute = m
+                    }
+
+                    if(h >= 10 && m < 10){
+                        tv_new_mission_time_pick.text = "$h:0$m"
+                        timeText = "$h:0$m"
+                        hour = h
+                        minute = m
+                    }
+                }else{
+                    tv_new_mission_time_pick.text = "$h:$m"
+                    timeText = "$h:$m"
+                    hour = h
+                    minute = m
+                }
             }, cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), true).show()
         }
 
@@ -85,16 +130,35 @@ class NewMissionActivity : AppCompatActivity() {
             place = et_new_mission_place.text.toString()
             missionContent = et_new_mission_content.text.toString()
 
-            if(category == "" || title == "" || place == "" || price == "" || date == "" ||
-                time == "" || missionContent == ""){
+            if(category == "" || title == "" || place == "" || price == "" || dateText == "" ||
+                timeText == "" || missionContent == ""){
                 Toast.makeText(this, R.string.request_email_pw, Toast.LENGTH_SHORT).show()
                 LN_new_mission_progress.visibility = View.INVISIBLE
                 return@setOnClickListener
             }
 
-            Toast.makeText(this, "잘 하셨습니다!", Toast.LENGTH_SHORT).show()
-            LN_new_mission_progress.visibility = View.INVISIBLE
-            finish()
+            val missionData = hashMapOf(
+                "category" to category,
+                "title" to title,
+                "place" to place,
+                "content" to missionContent,
+                "price" to price,
+                "year" to year,
+                "month" to month,
+                "day" to day,
+                "hour" to hour,
+                "minute" to minute,
+                "writer" to mAuth.uid.toString()
+            )
+
+            itemRef.add(missionData).addOnSuccessListener {
+                Toast.makeText(this, R.string.success_mission_register, Toast.LENGTH_SHORT).show()
+                finish()
+                LN_new_mission_progress.visibility = View.INVISIBLE
+            }.addOnFailureListener {
+                Toast.makeText(this, R.string.fail_mission_register, Toast.LENGTH_SHORT).show()
+                LN_new_mission_progress.visibility = View.INVISIBLE
+            }
         }
 
     }

@@ -168,7 +168,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:background="#BEBEBE" />
+                android:background="@color/lightGrey" />
 
             <LinearLayout
                 android:id="@+id/LN_base_setting"

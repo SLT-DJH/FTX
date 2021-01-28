@@ -35,13 +35,22 @@ class GroupAdapter(val context : Context, val postList : ArrayList<GroupData>) :
         val postContent = itemView.findViewById<TextView>(R.id.tv_post_content)
         val postImage = itemView.findViewById<ImageView>(R.id.iv_post_image)
 
+        val postLike = itemView.findViewById<ImageView>(R.id.iv_post_like)
+        val postComment = itemView.findViewById<ImageView>(R.id.iv_post_comment)
+
         fun bind(group : GroupData, context: Context){
             postCategory.text = group.categoryText
             postDate.text = group.dateText
             userImage.setImageResource(R.drawable.default_profile)
             userName.text = group.userText
             postContent.text = group.postText
-            postImage.setImageResource(R.drawable.default_back)
+            if(group.postImage == "test"){
+                postImage.setImageResource(R.drawable.default_back)
+            }else{
+                postImage.visibility = View.GONE
+            }
+            postLike.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+            postComment.setImageResource(R.drawable.ic_chat_bubble_outline_black_24dp)
         }
     }
 

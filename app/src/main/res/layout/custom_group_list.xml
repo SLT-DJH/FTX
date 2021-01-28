@@ -104,13 +104,13 @@
         android:layout_height="1dp"
         android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal"
-        android:background="@color/transparentGrey" />
+        android:background="@color/lightGrey" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="15dp">
+        android:padding="10dp">
 
         <LinearLayout
             android:id="@+id/layout_like"
@@ -169,7 +169,7 @@
         android:layout_height="1dp"
         android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal"
-        android:background="@color/transparentGrey" />
+        android:background="@color/lightGrey" />
 
     <LinearLayout
         android:id="@+id/betweenView1"

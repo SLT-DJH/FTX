@@ -26,9 +26,9 @@ class GroupFragment : Fragment() {
         setHasOptionsMenu(true)
 
         groupList.add(GroupData("부대생활질문", "2021. 1. 16.", "test",
-            "도진현", "내일이 전역인데 피복 반납은 어떻게 하는 건가요?", "test"))
+            "도진현", "내일이 전역인데 피복 반납은 어떻게 하는 건가요?", ""))
         groupList.add(GroupData("분실센터", "2021. 1. 16.", "test",
-            "김군대", "지갑을 분실했습니다!!", "test"))
+            "김군대", "지갑을 분실했습니다!!", ""))
         groupList.add(GroupData("고양이", "2021. 1. 16.", "test",
             "이고양", "수송대대 앞 고양이가 많이 귀엽습니다 ^^", "test"))
 

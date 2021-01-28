@@ -11,7 +11,8 @@ import com.jinhyun.ftx.R
 import com.jinhyun.ftx.data.MissionData
 import kotlinx.android.synthetic.main.custom_mission_list.view.*
 
-class MissionAdapter(val context: Context, val missionList : ArrayList<MissionData>) :
+class MissionAdapter(val context: Context, val missionList : ArrayList<MissionData>,
+                     val listener : OnItemClickListener) :
     RecyclerView.Adapter<MissionAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -27,12 +28,13 @@ class MissionAdapter(val context: Context, val missionList : ArrayList<MissionDa
         holder.bind(missionList[position], context)
     }
 
-    inner class Holder(itemView : View) : RecyclerView.ViewHolder(itemView){
+    inner class Holder(itemView : View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
         val missionImage = itemView.findViewById<ImageView>(R.id.iv_mission)
         val missionName = itemView.findViewById<TextView>(R.id.tv_mission_title)
         val missionPlace = itemView.findViewById<TextView>(R.id.tv_place)
         val missionDate = itemView.findViewById<TextView>(R.id.tv_date)
         val missionPrice = itemView.findViewById<TextView>(R.id.tv_price)
+        val missionTime = itemView.findViewById<TextView>(R.id.tv_time)
 
         fun bind(mission : MissionData, context: Context){
             when(mission.missionImage){
@@ -47,8 +49,35 @@ class MissionAdapter(val context: Context, val missionList : ArrayList<MissionDa
             }
             missionName.text = mission.missionText
             missionPrice.text = mission.priceText
-            missionDate.text = mission.dateText
+            missionDate.text = "${mission.missionYear}-${mission.missionMonth}-${mission.missionDay}"
             missionPlace.text = mission.placeText
+            if(mission.missionHour < 10 && mission.missionMinute < 10){
+                missionTime.text = "0${mission.missionHour}:0${mission.missionMinute}"
+            }
+            if(mission.missionHour < 10 && mission.missionMinute >= 10){
+                missionTime.text = "0${mission.missionHour}:${mission.missionMinute}"
+            }
+            if(mission.missionHour >= 10 && mission.missionMinute < 10){
+                missionTime.text = "${mission.missionHour}:0${mission.missionMinute}"
+            }
+            if(mission.missionHour >= 10 && mission.missionMinute >= 10){
+                missionTime.text = "${mission.missionHour}:${mission.missionMinute}"
+            }
         }
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION){
+                listener.onItemClick(position)
+            }
+        }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(position : Int)
     }
 }
