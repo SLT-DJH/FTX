@@ -295,7 +295,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="1일 1시간 20분 30초"
+                        android:text="0일 0시간 0분 0초"
                         android:textColor="@color/Black"
                         android:textSize="20sp"
                         android:textStyle="bold" />

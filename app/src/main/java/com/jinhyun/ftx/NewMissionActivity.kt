@@ -93,33 +93,26 @@ class NewMissionActivity : AppCompatActivity() {
             val cal = Calendar.getInstance()
             TimePickerDialog(this, TimePickerDialog.OnTimeSetListener{timePicker, h, m ->
 
-                if(h < 10 || m < 10){
-                    if(h < 10 && m < 10){
-                        tv_new_mission_time_pick.text = "0$h:0$m"
-                        timeText = "0$h:0$m"
-                        hour = h
-                        minute = m
-                    }
+                hour = h
+                minute = m
 
-                    if(h < 10 && m >= 10){
-                        tv_new_mission_time_pick.text = "0$h:$m"
-                        timeText = "0$h:$m"
-                        hour = h
-                        minute = m
-                    }
+                val hourText : String
+                val minuteText : String
 
-                    if(h >= 10 && m < 10){
-                        tv_new_mission_time_pick.text = "$h:0$m"
-                        timeText = "$h:0$m"
-                        hour = h
-                        minute = m
-                    }
+                if(h < 10){
+                    hourText = "0$h"
                 }else{
-                    tv_new_mission_time_pick.text = "$h:$m"
-                    timeText = "$h:$m"
-                    hour = h
-                    minute = m
+                    hourText = "$h"
                 }
+
+                if(m < 10){
+                    minuteText = "0$m"
+                }else{
+                    minuteText = "$m"
+                }
+
+                tv_new_mission_time_pick.text = "$hourText:$minuteText"
+                timeText = "$hourText:$minuteText"
             }, cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), true).show()
         }
 

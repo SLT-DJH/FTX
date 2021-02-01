@@ -51,18 +51,23 @@ class MissionAdapter(val context: Context, val missionList : ArrayList<MissionDa
             missionPrice.text = mission.priceText
             missionDate.text = "${mission.missionYear}-${mission.missionMonth}-${mission.missionDay}"
             missionPlace.text = mission.placeText
-            if(mission.missionHour < 10 && mission.missionMinute < 10){
-                missionTime.text = "0${mission.missionHour}:0${mission.missionMinute}"
+
+            val missionHour : String
+            val missionMinute : String
+
+            if (mission.missionHour < 10){
+                missionHour = "0${mission.missionHour}"
+            }else{
+                missionHour = "${mission.missionHour}"
             }
-            if(mission.missionHour < 10 && mission.missionMinute >= 10){
-                missionTime.text = "0${mission.missionHour}:${mission.missionMinute}"
+
+            if (mission.missionMinute < 10){
+                missionMinute = "0${mission.missionMinute}"
+            }else{
+                missionMinute = "${mission.missionMinute}"
             }
-            if(mission.missionHour >= 10 && mission.missionMinute < 10){
-                missionTime.text = "${mission.missionHour}:0${mission.missionMinute}"
-            }
-            if(mission.missionHour >= 10 && mission.missionMinute >= 10){
-                missionTime.text = "${mission.missionHour}:${mission.missionMinute}"
-            }
+
+            missionTime.text = "$missionHour:$missionMinute"
         }
 
         init {
