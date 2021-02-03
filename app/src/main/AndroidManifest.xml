@@ -31,6 +31,7 @@
         <activity android:name=".NewMissionActivity"/>
         <activity android:name=".NewPostActivity"/>
         <activity android:name=".SelectedMissionActivity"/>
+        <activity android:name=".ChatActivity"/>
     </application>
 
 </manifest>

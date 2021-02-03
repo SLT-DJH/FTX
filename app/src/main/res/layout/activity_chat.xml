@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="false"
+                android:background="@color/White"
+                android:elevation="3dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="15dp"
+                android:id="@+id/LN_chatboard_title">
+
+                <ImageView
+                    android:id="@+id/iv_chatboard_back"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@drawable/ic_keyboard_backspace_black_24dp" />
+
+                <TextView
+                    android:id="@+id/tv_chatboard_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:text="@string/chat"
+                    android:textColor="@color/Black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/iv_chatboard_menu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@drawable/ic_menu_black_24dp" />
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/LN_chatboard_title"
+                android:layout_above="@id/LN_chatboard_send">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/White"
+                    android:orientation="vertical">
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/LN_chatboard_send"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/White"
+                android:elevation="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_chatboard_attachment"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="8dp"
+                    android:tint="@color/military"
+                    app:srcCompat="@drawable/ic_attachment_black_24dp" />
+
+                <EditText
+                    android:id="@+id/et_chatboard_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:ems="10"
+                    android:hint="@string/input_message"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/Black"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/iv_chatboard_send"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:tint="@color/military"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_send_black_24dp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/LN_chatboard_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/Transparent_Black"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <ProgressBar
+                android:id="@+id/chatboard_progress"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+</RelativeLayout>

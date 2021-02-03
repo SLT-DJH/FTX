@@ -76,6 +76,7 @@ class MissionFragment : Fragment(), MissionAdapter.OnItemClickListener {
                 val MissionHour = doc.getLong("hour")!!.toInt()
                 val MissionMinute = doc.getLong("minute")!!.toInt()
                 val MissionContent = doc.getString("content").toString()
+                //UserImage = Writer Id
                 val UserImage = doc.getString("writer").toString()
                 val PriceText = doc.getString("price").toString()
 

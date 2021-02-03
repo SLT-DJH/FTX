@@ -1,11 +1,14 @@
 package com.jinhyun.ftx
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_selected_mission.*
 import java.util.*
@@ -14,6 +17,8 @@ class SelectedMissionActivity : AppCompatActivity() {
 
     val storage = FirebaseStorage.getInstance()
     val TAG = "SelectedMissionActivity"
+    val db = FirebaseFirestore.getInstance()
+    val mAuth = FirebaseAuth.getInstance()
 
     private lateinit var timer : CountDownTimer
 
@@ -32,6 +37,7 @@ class SelectedMissionActivity : AppCompatActivity() {
         val missionPlace = intent.getStringExtra("missionPlace").toString()
         val missionCategory = intent.getStringExtra("missionCategory").toString()
         val userName = intent.getStringExtra("userName").toString()
+        //userImage = Writer ID
         val userImage = intent.getStringExtra("userImage").toString()
         val userBase = intent.getStringExtra("userBase").toString()
         val missionHour = intent.getIntExtra("missionHour", 0)
@@ -78,6 +84,13 @@ class SelectedMissionActivity : AppCompatActivity() {
 
         iv_selected_mission_back.setOnClickListener {
             onBackPressed()
+        }
+
+        btn_selected_mission_chat.setOnClickListener {
+            val intent = Intent(this, ChatActivity::class.java)
+            intent.putExtra("receiver", userImage)
+            intent.putExtra("receiverName", userName)
+            startActivity(intent)
         }
 
 

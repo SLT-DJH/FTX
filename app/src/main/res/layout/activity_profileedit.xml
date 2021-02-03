@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/White"
-        android:elevation="5dp"
+        android:elevation="3dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="15dp">
