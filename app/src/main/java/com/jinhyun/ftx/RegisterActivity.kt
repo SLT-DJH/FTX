@@ -101,18 +101,19 @@ class RegisterActivity : AppCompatActivity() {
                         "password" to password,
                         "uid" to userId,
                         "base" to "",
-                        "access" to false
+                        "access" to false,
+                        "profile" to ""
                     )
-                    val storage = FirebaseStorage.getInstance()
-                    val storageRef = storage.getReferenceFromUrl("gs://trainingfield-ed0a1.appspot.com")
-                        .child("Profile/$userId.png")
-                    val uri = Uri.parse("android.resource://com.jinhyun.ftx/drawable/default_profile")
-
-                    storageRef.putFile(uri).addOnSuccessListener {
-                        Log.d(TAG, "Profile Image upload finish")
-                    }.addOnFailureListener{
-                        Log.d(TAG, "Profile Image upload failed")
-                    }
+//                    val storage = FirebaseStorage.getInstance()
+//                    val storageRef = storage.getReferenceFromUrl("gs://trainingfield-ed0a1.appspot.com")
+//                        .child("Profile/$userId.png")
+//                    val uri = Uri.parse("android.resource://com.jinhyun.ftx/drawable/default_profile")
+//
+//                    storageRef.putFile(uri).addOnSuccessListener {
+//                        Log.d(TAG, "Profile Image upload finish")
+//                    }.addOnFailureListener{
+//                        Log.d(TAG, "Profile Image upload failed")
+//                    }
 
                     db.collection("Users").document(userId).set(userinfo)
                         .addOnSuccessListener {

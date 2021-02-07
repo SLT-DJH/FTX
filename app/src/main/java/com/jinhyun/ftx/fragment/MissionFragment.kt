@@ -145,7 +145,7 @@ class MissionFragment : Fragment(), MissionAdapter.OnItemClickListener {
         intent.putExtra("missionContent", clickedItem.missionContent)
         intent.putExtra("missionPlace", clickedItem.placeText)
         intent.putExtra("userName", clickedItem.userName)
-        intent.putExtra("userImage", clickedItem.userImage)
+        intent.putExtra("writerID", clickedItem.userImage)
         intent.putExtra("userBase", clickedItem.userBase)
         intent.putExtra("missionHour", clickedItem.missionHour)
         intent.putExtra("missionMinute", clickedItem.missionMinute)

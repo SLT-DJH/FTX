@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
@@ -19,6 +20,7 @@ class SelectedMissionActivity : AppCompatActivity() {
     val TAG = "SelectedMissionActivity"
     val db = FirebaseFirestore.getInstance()
     val mAuth = FirebaseAuth.getInstance()
+    val userRef = db.collection("Users")
 
     private lateinit var timer : CountDownTimer
 
@@ -38,23 +40,35 @@ class SelectedMissionActivity : AppCompatActivity() {
         val missionCategory = intent.getStringExtra("missionCategory").toString()
         val userName = intent.getStringExtra("userName").toString()
         //userImage = Writer ID
-        val userImage = intent.getStringExtra("userImage").toString()
+        val writerID = intent.getStringExtra("writerID").toString()
         val userBase = intent.getStringExtra("userBase").toString()
         val missionHour = intent.getIntExtra("missionHour", 0)
         val missionMinute = intent.getIntExtra("missionMinute", 0)
 
         startCountdown(missionYear, missionMonth, missionDay, missionHour, missionMinute)
 
-        val storageRef = storage.getReferenceFromUrl("gs://trainingfield-ed0a1.appspot.com")
-            .child("Profile/${userImage}.png")
+//        val storageRef = storage.getReferenceFromUrl("gs://trainingfield-ed0a1.appspot.com")
+//            .child("Profile/${userImage}.png")
 
         val profileImage = findViewById<ImageView>(R.id.iv_selected_mission_profile)
 
-        storageRef.downloadUrl.addOnSuccessListener { task ->
+        userRef.document(writerID).addSnapshotListener { value, error ->
+            if (error != null){
+                return@addSnapshotListener
+            }
 
-            Glide.with(this).load(task).into(profileImage)
-
+            if (value!!.get("profile") != ""){
+                Glide.with(this).load(value!!.get("profile")).into(profileImage)
+            }else{
+                profileImage.setImageResource(R.drawable.default_profile)
+            }
         }
+
+//        storageRef.downloadUrl.addOnSuccessListener { task ->
+//
+//            Glide.with(this).load(task).into(profileImage)
+//
+//        }
 
         tv_selected_mission_name.text = userName
         tv_selected_mission_base.text = userBase
@@ -87,10 +101,14 @@ class SelectedMissionActivity : AppCompatActivity() {
         }
 
         btn_selected_mission_chat.setOnClickListener {
-            val intent = Intent(this, ChatActivity::class.java)
-            intent.putExtra("receiver", userImage)
-            intent.putExtra("receiverName", userName)
-            startActivity(intent)
+            if (writerID == mAuth.currentUser!!.uid){
+                Toast.makeText(this, R.string.same_id, Toast.LENGTH_SHORT).show()
+            }else{
+                val intent = Intent(this, ChatActivity::class.java)
+                intent.putExtra("receiver", writerID)
+                intent.putExtra("receiverName", userName)
+                startActivity(intent)
+            }
         }
 
 
@@ -130,7 +148,7 @@ class SelectedMissionActivity : AppCompatActivity() {
         val days = ((((num / 1000) / 60) / 60) / 24).toInt()
         val hours = ((((num  / 1000) / 60) / 60) % 24).toInt()
         val minutes = (((num / 1000) / 60) % 60).toInt()
-        val seconds =((num / 1000) % 60).toInt()
+        val seconds = ((num / 1000) % 60).toInt()
 
         tv_selected_mission_countdown.text = "${days}일 ${hours}시 ${minutes}분 ${seconds}초"
     }

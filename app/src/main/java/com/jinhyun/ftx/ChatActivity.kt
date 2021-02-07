@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ServerTimestamp
@@ -28,6 +29,7 @@ import com.jinhyun.ftx.data.ChatData
 import com.jinhyun.ftx.model.Chat
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import io.grpc.Server
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.lang.RuntimeException
 import java.util.*
@@ -123,8 +125,8 @@ class ChatActivity : AppCompatActivity() {
         }
 
         iv_chatboard_attachment.setOnClickListener {
-            changePicture()
             LN_chatboard_progress.visibility = View.VISIBLE
+            changePicture()
         }
     }
 
@@ -172,13 +174,13 @@ class ChatActivity : AppCompatActivity() {
                 for(doc in value!!){
                     val chat = ChatData(doc.get("message").toString(), doc.get("sender").toString(),
                         doc.get("receiver").toString(), doc.get("url").toString(),
-                        doc.get("timestamp") as Timestamp)
+                        (doc.get("timestamp") as Timestamp).toDate())
 
                     chatList.add(chat)
 
                     mAdapter.notifyDataSetChanged()
 
-                    Log.d(TAG, "chatlist added : ${doc.get("message").toString()}")
+                    Log.d(TAG, "checkTimestamp : ${doc.get("timestamp") as Timestamp}")
 
                 }
 
@@ -210,21 +212,20 @@ class ChatActivity : AppCompatActivity() {
 
                 storageRef.putFile(resultUri).addOnSuccessListener {
                     storageRef.downloadUrl.addOnSuccessListener {
-                        val timestamp = Timestamp(Date())
 
                         val messageHashMap = hashMapOf<String, Any?>(
                             "message" to "",
                             "sender" to sender,
                             "receiver" to receiver,
                             "url" to it.toString(),
-                            "timestamp" to timestamp
+                            "timestamp" to FieldValue.serverTimestamp()
                         )
 
                         Log.d(TAG, "result Uri : $it")
 
                         val messageListHashMap = hashMapOf<String, Any?>(
                             "last" to getString(R.string.picture),
-                            "timestamp" to timestamp
+                            "timestamp" to FieldValue.serverTimestamp()
                         )
 
                         val senderChatRef = chatRef.document(sender)

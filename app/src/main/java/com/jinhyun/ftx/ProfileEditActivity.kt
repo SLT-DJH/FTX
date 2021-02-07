@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -46,11 +47,24 @@ class ProfileEditActivity : AppCompatActivity() {
         //사진 받아오기
         val profileImage = findViewById<ImageView>(R.id.iv_edit_profile_image)
 
-        storageRef.downloadUrl.addOnSuccessListener { task ->
-            applicationContext?.let{
-                Glide.with(it).load(task).into(profileImage)
+        userref.addSnapshotListener { value, error ->
+            if (error != null){
+                return@addSnapshotListener
+            }
+
+            if (value!!.get("profile") != ""){
+                Glide.with(this).load(value!!.get("profile")).into(profileImage)
+            }else{
+                profileImage.setImageResource(R.drawable.default_profile)
+                Log.d(TAG, "no profile!")
             }
         }
+
+//        storageRef.downloadUrl.addOnSuccessListener { task ->
+//            applicationContext?.let{
+//                Glide.with(it).load(task).into(profileImage)
+//            }
+//        }
 
         //이름 받아오기
         et_edit_profile_name.setText(intent.extras!!.getString("name"))
@@ -69,8 +83,12 @@ class ProfileEditActivity : AppCompatActivity() {
                     if(imageUri != ""){
                         //이미지 변경이 있을 시
                         storageRef.putFile(Uri.parse(imageUri)).addOnSuccessListener {
-                            progressbar_edit_profile.visibility = View.INVISIBLE
-                            Toast.makeText(this,R.string.change_complete,Toast.LENGTH_SHORT).show()
+                            storageRef.downloadUrl.addOnSuccessListener {
+                                userref.update("profile", it.toString()).addOnSuccessListener {
+                                    progressbar_edit_profile.visibility = View.INVISIBLE
+                                    Toast.makeText(this,R.string.change_complete,Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }.addOnFailureListener{
                             progressbar_edit_profile.visibility = View.INVISIBLE
                             Toast.makeText(this,R.string.change_failed,Toast.LENGTH_SHORT).show()

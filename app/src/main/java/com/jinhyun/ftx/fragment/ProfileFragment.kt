@@ -49,12 +49,24 @@ class ProfileFragment : Fragment() {
         //retrieve profile image
         val profileImage = view.findViewById<ImageView>(R.id.iv_profile_image)
 
-        storageRef.downloadUrl.addOnSuccessListener { task ->
-            context?.let {
-                Glide.with(it).load(task).into(profileImage)
-                Log.d(TAG, "result : $task")
+        userref.addSnapshotListener { value, error ->
+            if(error != null){
+                return@addSnapshotListener
+            }
+
+            if(value!!.get("profile") != ""){
+                Glide.with(activity!!.applicationContext).load(value!!.get("profile")).into(profileImage)
+            }else{
+                profileImage.setImageResource(R.drawable.default_profile)
             }
         }
+
+//        storageRef.downloadUrl.addOnSuccessListener { task ->
+//            context?.let {
+//                Glide.with(it).load(task).into(profileImage)
+//                Log.d(TAG, "result : $task")
+//            }
+//        }
 
         view.tv_profile_access.setOnClickListener {
             Toast.makeText(activity, "프로필 인증 절차 ㄱ", Toast.LENGTH_SHORT).show()

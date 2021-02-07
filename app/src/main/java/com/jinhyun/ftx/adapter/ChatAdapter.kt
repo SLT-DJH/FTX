@@ -58,6 +58,8 @@ class ChatAdapter(val mContext : Context, val chatList : ArrayList<ChatData>, va
         val right_card_image = itemView.findViewById<CardView>(R.id.card_message_right_image)
         val left_image = itemView.findViewById<ImageView>(R.id.iv_message_left_image)
         val right_image = itemView.findViewById<ImageView>(R.id.iv_message_right_image)
+        val left_linear_image = itemView.findViewById<LinearLayout>(R.id.LN_image_message_left)
+        val right_linear_image = itemView.findViewById<LinearLayout>(R.id.LN_image_message_right)
 
         fun bind(chatData : ChatData, context: Context){
             if (chatData.sender != firebaseUser.uid){
@@ -69,25 +71,25 @@ class ChatAdapter(val mContext : Context, val chatList : ArrayList<ChatData>, va
                 //image message -right side
                 if (chatData.sender == firebaseUser.uid){
                     right_linear_text.visibility = View.GONE
-                    right_card_image.visibility = View.VISIBLE
+                    right_linear_image.visibility = View.VISIBLE
                     Glide.with(mContext).load(chatData.url).into(right_image)
                 }//image message - left side
                 else if (chatData.sender != firebaseUser.uid){
                     left_linear_text.visibility = View.GONE
-                    left_card_image.visibility = View.VISIBLE
+                    left_linear_image.visibility = View.VISIBLE
                     Glide.with(mContext).load(chatData.url).into(left_image)
                 }
             }//text message
             else{
                 if (chatData.sender == firebaseUser.uid){
                     right_linear_text.visibility = View.VISIBLE
-                    right_card_image.visibility = View.GONE
+                    right_linear_image.visibility = View.GONE
 
                     message_text.text = chatData.message
                 }//image message - left side
                 else if (chatData.sender != firebaseUser.uid){
                     left_linear_text.visibility = View.VISIBLE
-                    left_card_image.visibility = View.GONE
+                    left_linear_image.visibility = View.GONE
 
                     message_text.text = chatData.message
                 }
