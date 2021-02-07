@@ -52,20 +52,6 @@ class MissionFragment : Fragment(), MissionAdapter.OnItemClickListener {
             view.missionRecyclerView.adapter = mAdapter
             view.missionRecyclerView.layoutManager = LinearLayoutManager(activity!!.applicationContext)
 
-            missionList.add(
-                MissionData(getString(R.string.errand), "심부름 구합니다.",
-                    "BOQ 11동 212호", 2021,1, 20,13,30,"2,000",
-                    "오늘 아침 ㅁ이ㅏㅎ머ㅣ하ㅗㅁ사ㅣ모시ㅏ\nㅁ사ㅓㅣㅁ사ㅗㅁ미아쇠마오시ㅏㅁㅅ\n밍섬쇠ㅏㅇ모시ㅏㅁㅅ",
-                    "가나다", "test", "공군 제10전투비행단"))
-            missionList.add(MissionData(getString(R.string.delivery), "배달이 필요합니다. \n정문에서 치킨..",
-                "BOQ 11동 201호", 2021, 1,8,7,0, "3,000",
-                "오늘 아침 ㅁ이ㅏㅎ머ㅣ하ㅗㅁ사ㅣ모시ㅏ\nㅁ사ㅓㅣㅁ사ㅗㅁ미아쇠마오시ㅏㅁㅅ\n밍섬쇠ㅏㅇ모시ㅏㅁㅅ",
-                "가나다하마", "test", "공군 제11전투비행단"))
-            missionList.add(MissionData(getString(R.string.cleaning), "물건을 옮겨주세요!!",
-                "창조생활관 2층 9호", 2021, 1,2,13,50, "5,000",
-                "오늘 아침 ㅁ이ㅏㅎ머ㅣ하ㅗㅁ사ㅣ모시ㅏ\nㅁ사ㅓㅣㅁ사ㅗㅁ미아쇠마오시ㅏㅁㅅ\n밍섬쇠ㅏㅇ모시ㅏㅁㅅ",
-                "가나다하마로매", "test", "공군 제8전투비행단"))
-
             for (doc in value!!){
                 val MissionCategory = doc.getString("category").toString()
                 val MissionText = doc.getString("title").toString()

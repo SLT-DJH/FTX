@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -130,6 +131,8 @@ class NewMissionActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            val timestamp = Timestamp(Date())
+
             val missionData = hashMapOf(
                 "category" to category,
                 "title" to title,
@@ -141,7 +144,8 @@ class NewMissionActivity : AppCompatActivity() {
                 "day" to day,
                 "hour" to hour,
                 "minute" to minute,
-                "writer" to mAuth.uid.toString()
+                "writer" to mAuth.uid.toString(),
+                "timestamp" to timestamp
             )
 
             itemRef.add(missionData).addOnSuccessListener {

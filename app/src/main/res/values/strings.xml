@@ -134,5 +134,7 @@
     <string name="success_mission_register">미션이 등록되었습니다.</string>
     <string name="fail_mission_register">미션 등록에 실패했습니다...</string>
 
+    <string name="picture">사진</string>
+
 
 </resources>

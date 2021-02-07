@@ -6,15 +6,7 @@
     android:background="@color/lightGrey"
     android:orientation="vertical">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/White"
-            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/groupRecyclerView"
@@ -22,8 +14,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="60dp"/>
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
