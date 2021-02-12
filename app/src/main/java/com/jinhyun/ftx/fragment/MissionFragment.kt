@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.jinhyun.ftx.NewMissionActivity
 import com.jinhyun.ftx.R
 import com.jinhyun.ftx.SelectedMissionActivity
@@ -41,7 +42,7 @@ class MissionFragment : Fragment(), MissionAdapter.OnItemClickListener {
         val itemRef = db.collection("Missions")
             .document(arguments?.getString("base").toString()).collection("Items")
 
-        itemRef.addSnapshotListener { value, error ->
+        itemRef.orderBy("timestamp", Query.Direction.ASCENDING).addSnapshotListener { value, error ->
             if (error != null){
                 return@addSnapshotListener
             }

@@ -136,7 +136,11 @@
 
     <string name="picture">사진</string>
 
-    <string name="same_id">동일 사용자에게 채팅은 불가능합니다.</string>
+    <string name="same_id">본인에게 채팅은 불가능합니다.</string>
+    <string name="mission_over">미션이 종료되었습니다.</string>
+
+    <string name="yesterday">어제</string>
+    <string name="the_day_before_yesterday">그저께</string>
 
 
 </resources>

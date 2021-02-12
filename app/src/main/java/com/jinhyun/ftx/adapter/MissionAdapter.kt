@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jinhyun.ftx.R
 import com.jinhyun.ftx.data.MissionData
 import kotlinx.android.synthetic.main.custom_mission_list.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MissionAdapter(val context: Context, val missionList : ArrayList<MissionData>,
                      val listener : OnItemClickListener) :
@@ -49,25 +52,16 @@ class MissionAdapter(val context: Context, val missionList : ArrayList<MissionDa
             }
             missionName.text = mission.missionText
             missionPrice.text = mission.priceText
-            missionDate.text = "${mission.missionYear}-${mission.missionMonth}-${mission.missionDay}"
             missionPlace.text = mission.placeText
 
-            val missionHour : String
-            val missionMinute : String
+            val selectedCal = Calendar.getInstance()
+            selectedCal.set(mission.missionYear, mission.missionMonth - 1, mission.missionDay,
+                mission.missionHour, mission.missionMinute)
+            val dateText = SimpleDateFormat("yyyy. M. dd").format(selectedCal.time)
+            val timeText = SimpleDateFormat("HH:mm").format(selectedCal.time)
 
-            if (mission.missionHour < 10){
-                missionHour = "0${mission.missionHour}"
-            }else{
-                missionHour = "${mission.missionHour}"
-            }
-
-            if (mission.missionMinute < 10){
-                missionMinute = "0${mission.missionMinute}"
-            }else{
-                missionMinute = "${mission.missionMinute}"
-            }
-
-            missionTime.text = "$missionHour:$missionMinute"
+            missionDate.text = dateText
+            missionTime.text = timeText
         }
 
         init {

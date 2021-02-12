@@ -51,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="날짜"
+            android:textSize="10sp"
             android:layout_gravity="bottom"
             android:layout_marginLeft="5dp"
             android:textColor="@color/transparentGrey"/>
@@ -90,6 +91,7 @@
             android:layout_gravity="bottom"
             android:layout_marginLeft="5dp"
             android:text="날짜"
+            android:textSize="10sp"
             android:textColor="@color/transparentGrey" />
 
     </LinearLayout>

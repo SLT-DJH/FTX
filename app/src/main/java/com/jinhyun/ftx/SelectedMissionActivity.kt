@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_selected_mission.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class SelectedMissionActivity : AppCompatActivity() {
@@ -21,6 +22,8 @@ class SelectedMissionActivity : AppCompatActivity() {
     val db = FirebaseFirestore.getInstance()
     val mAuth = FirebaseAuth.getInstance()
     val userRef = db.collection("Users")
+
+    val setCalendar = Calendar.getInstance()
 
     private lateinit var timer : CountDownTimer
 
@@ -75,39 +78,40 @@ class SelectedMissionActivity : AppCompatActivity() {
         tv_selected_mission_category.text = missionCategory
         tv_selected_mission_title.text = missionTitle
         tv_selected_mission_content.text = missionContent
-        tv_selected_mission_mission_date.text = "$missionYear-$missionMonth-$missionDay"
         tv_selected_mission_mission_price.text = missionPrice
         tv_selected_mission_mission_place.text = missionPlace
 
-        val hourText : String
-        val minuteText : String
+        val selectedCal = Calendar.getInstance()
+        selectedCal.set(missionYear, missionMonth - 1, missionDay, missionHour, missionMinute)
+        val dateText = SimpleDateFormat("yyyy. M. dd").format(selectedCal.time)
+        val timeText = SimpleDateFormat("HH:mm").format(selectedCal.time)
 
-        if(missionHour < 10){
-            hourText = "0$missionHour"
-        }else{
-            hourText = "$missionHour"
-        }
-
-        if(missionMinute < 10){
-            minuteText = "0$missionMinute"
-        }else{
-            minuteText = "$missionMinute"
-        }
-
-        tv_selected_mission_mission_time.text = "$hourText:$minuteText"
+        tv_selected_mission_mission_date.text = dateText
+        tv_selected_mission_mission_time.text = timeText
 
         iv_selected_mission_back.setOnClickListener {
             onBackPressed()
         }
 
         btn_selected_mission_chat.setOnClickListener {
-            if (writerID == mAuth.currentUser!!.uid){
-                Toast.makeText(this, R.string.same_id, Toast.LENGTH_SHORT).show()
+            val getMill = setCalendar.timeInMillis
+            val checkMill = getMill - System.currentTimeMillis()
+
+            if (checkMill > 0){
+                if (writerID == mAuth.currentUser!!.uid){
+                    Toast.makeText(this, R.string.same_id, Toast.LENGTH_SHORT).show()
+                }else{
+                    val intent = Intent(this, ChatActivity::class.java)
+                    intent.putExtra("receiver", writerID)
+                    intent.putExtra("receiverName", userName)
+                    startActivity(intent)
+                }
             }else{
-                val intent = Intent(this, ChatActivity::class.java)
-                intent.putExtra("receiver", writerID)
-                intent.putExtra("receiverName", userName)
-                startActivity(intent)
+                if (writerID == mAuth.currentUser!!.uid){
+                    Toast.makeText(this, R.string.same_id, Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this, R.string.mission_over, Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -116,7 +120,6 @@ class SelectedMissionActivity : AppCompatActivity() {
 
     private fun startCountdown(year : Int, month : Int, day : Int, hour : Int, minute : Int){
         Log.d(TAG, "startCountdown $year, $month, $day, $hour, $minute")
-        val setCalendar = Calendar.getInstance()
 
         setCalendar.set(year, month-1, day, hour, minute)
 

@@ -17,6 +17,9 @@ import com.jinhyun.ftx.R
 import com.jinhyun.ftx.data.ChatData
 import com.jinhyun.ftx.model.Chat
 import kotlinx.android.synthetic.main.message_item_left.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ChatAdapter(val mContext : Context, val chatList : ArrayList<ChatData>, val imageUrl : String) :
     RecyclerView.Adapter<ChatAdapter.Holder>() {
@@ -60,6 +63,8 @@ class ChatAdapter(val mContext : Context, val chatList : ArrayList<ChatData>, va
         val right_image = itemView.findViewById<ImageView>(R.id.iv_message_right_image)
         val left_linear_image = itemView.findViewById<LinearLayout>(R.id.LN_image_message_left)
         val right_linear_image = itemView.findViewById<LinearLayout>(R.id.LN_image_message_right)
+        val date_text = itemView.findViewById<TextView>(R.id.tv_date)
+        val image_date_text = itemView.findViewById<TextView>(R.id.tv_image_date)
 
         fun bind(chatData : ChatData, context: Context){
             if (chatData.sender != firebaseUser.uid){
@@ -93,6 +98,38 @@ class ChatAdapter(val mContext : Context, val chatList : ArrayList<ChatData>, va
 
                     message_text.text = chatData.message
                 }
+            }
+
+            //날짜계산
+            val currentCal = Calendar.getInstance()
+            val currentYear = currentCal.get(Calendar.YEAR)
+            val currentMonth = currentCal.get(Calendar.MONTH) + 1
+            val currentDay = currentCal.get(Calendar.DATE)
+
+            val selectedCal = Calendar.getInstance()
+            selectedCal.time = chatData.timestamp.toDate()
+            val selectedYear = selectedCal.get(Calendar.YEAR)
+            val selectedMonth = selectedCal.get(Calendar.MONTH) + 1
+            val selectedDay = selectedCal.get(Calendar.DATE)
+
+            if ((currentYear- selectedYear) == 0 && (currentMonth - selectedMonth) == 0){
+                if ((currentDay - selectedDay) == 1){
+                    date_text.text = "어제"
+                    image_date_text.text = "어제"
+                }else if ((currentDay - selectedDay) == 2){
+                    date_text.text = "그저께"
+                    image_date_text.text = "그저께"
+                }else if ((currentDay - selectedDay) == 0){
+                    val sdf = SimpleDateFormat("a h:mm").format(chatData.timestamp.toDate())
+                    date_text.text = sdf
+                    image_date_text.text = sdf
+                }else{
+                    date_text.text = "$selectedYear. $selectedMonth. $selectedDay."
+                    image_date_text.text = "$selectedYear. $selectedMonth. $selectedDay."
+                }
+            }else{
+                date_text.text = "$selectedYear. $selectedMonth. $selectedDay."
+                image_date_text.text = "$selectedYear. $selectedMonth. $selectedDay."
             }
         }
 

@@ -131,7 +131,10 @@ class NewMissionActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val timestamp = Timestamp(Date())
+            val selectedCalendar = Calendar.getInstance()
+            selectedCalendar.set(year, month, day, hour, minute)
+
+            val timestamp = selectedCalendar.timeInMillis
 
             val missionData = hashMapOf(
                 "category" to category,

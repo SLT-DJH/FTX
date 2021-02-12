@@ -1,5 +1,6 @@
 package com.jinhyun.ftx.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
@@ -8,14 +9,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.jinhyun.ftx.ChatActivity
 import com.jinhyun.ftx.R
 import com.jinhyun.ftx.adapter.ChatListAdapter
 import com.jinhyun.ftx.data.ChatListData
 import kotlinx.android.synthetic.main.fragment_chat.view.*
+import java.text.FieldPosition
+import java.text.SimpleDateFormat
+import java.util.*
 
-class ChatFragment : Fragment() {
+class ChatFragment : Fragment() , ChatListAdapter.OnItemClickListener{
 
-    val chatlistList = arrayListOf<ChatListData>()
+    var chatlistList = arrayListOf<ChatListData>()
+    val db = FirebaseFirestore.getInstance()
+    val mAuth = FirebaseAuth.getInstance()
+    val userRef = db.collection("Users")
+    val chatlistRef = db.collection("ChatLists").document(mAuth.currentUser!!.uid)
+        .collection("Chatrooms")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_chat, container, false)
@@ -24,19 +38,40 @@ class ChatFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        chatlistList.add(ChatListData("test", "도둑냥", "공군 제10전투비행단",
-            "2021. 1. 24.", "도진현님, 반갑습니다! 어쩐일로"))
-        chatlistList.add(ChatListData("test", "검소한놈", "공군 제10전투비행단",
-            "2021. 1. 24.", "지금 미국은 잘 시간 아님?"))
-        chatlistList.add(ChatListData("test", "서로고갯집", "공군 제10전투비행단",
-            "2021. 1. 24.", "필승! 보도정문 택배보관소 내 택배"))
+        chatlistRef.orderBy("timestamp", Query.Direction.DESCENDING).addSnapshotListener { value, error ->
+            if(error != null){
+                return@addSnapshotListener
+            }
 
-        val mAdapter = ChatListAdapter(activity!!.applicationContext, chatlistList)
-        view.chatlistRecyclerView.adapter = mAdapter
+            chatlistList = arrayListOf()
 
-        val lm = LinearLayoutManager(activity!!.applicationContext)
-        view.chatlistRecyclerView.layoutManager = lm
-        view.chatlistRecyclerView.setHasFixedSize(true)
+            val mAdapter = ChatListAdapter(activity!!.applicationContext, chatlistList, this)
+            view.chatlistRecyclerView.adapter = mAdapter
+            view.chatlistRecyclerView.layoutManager = LinearLayoutManager(activity!!.applicationContext)
+
+            for(doc in value!!){
+
+                var userName  = ""
+                var userBase  = ""
+                var userImage = ""
+
+                userRef.document(doc.id).get().addOnSuccessListener {
+                    userName = it.get("name").toString()
+                    userBase = it.get("base").toString()
+                    userImage = it.get("profile").toString()
+
+                    val chatList = ChatListData(userImage, userName, userBase,
+                        doc.get("timestamp") as Timestamp, doc.get("last").toString(), doc.id)
+
+                    chatlistList.add(chatList)
+
+                    mAdapter.notifyDataSetChanged()
+                }
+
+
+            }
+        }
+
 
         return view
     }
@@ -45,5 +80,14 @@ class ChatFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
 
         inflater?.inflate(R.menu.menu_chat_bar, menu)
+    }
+
+    override fun onChatItemClick(position: Int) {
+        val clickItem = chatlistList[position]
+
+        val intent = Intent(activity, ChatActivity::class.java)
+        intent.putExtra("receiver", clickItem.userID)
+        intent.putExtra("receiverName", clickItem.nameText)
+        startActivity(intent)
     }
 }

@@ -116,11 +116,11 @@ class ChatActivity : AppCompatActivity() {
             val randomId = senderChatRef.collection("Messages").document().id
 
             senderChatRef.collection("Messages").document(randomId).set(messageHashMap).addOnSuccessListener {
-                senderChatRef.set(messageListHashMap).addOnSuccessListener {
-                    receiverChatRef.collection("Messages").document(randomId).set(messageHashMap).addOnSuccessListener {
-                        receiverChatRef.set(messageListHashMap)
-                    }
-                }
+                senderChatRef.set(messageListHashMap)
+            }
+
+            receiverChatRef.collection("Messages").document(randomId).set(messageHashMap).addOnSuccessListener {
+                receiverChatRef.set(messageListHashMap)
             }
         }
 
@@ -174,7 +174,7 @@ class ChatActivity : AppCompatActivity() {
                 for(doc in value!!){
                     val chat = ChatData(doc.get("message").toString(), doc.get("sender").toString(),
                         doc.get("receiver").toString(), doc.get("url").toString(),
-                        (doc.get("timestamp") as Timestamp).toDate())
+                        doc.get("timestamp") as Timestamp)
 
                     chatList.add(chat)
 
@@ -236,11 +236,13 @@ class ChatActivity : AppCompatActivity() {
 
                         senderChatRef.collection("Messages").document(randomId).set(messageHashMap).addOnSuccessListener {
                             senderChatRef.set(messageListHashMap).addOnSuccessListener {
-                                receiverChatRef.collection("Messages").document(randomId).set(messageHashMap).addOnSuccessListener {
-                                    receiverChatRef.set(messageListHashMap).addOnSuccessListener {
-                                        LN_chatboard_progress.visibility = View.INVISIBLE
-                                    }
-                                }
+                                LN_chatboard_progress.visibility = View.INVISIBLE
+                            }
+                        }
+
+                        receiverChatRef.collection("Messages").document(randomId).set(messageHashMap).addOnSuccessListener {
+                            receiverChatRef.set(messageListHashMap).addOnSuccessListener {
+                                LN_chatboard_progress.visibility = View.INVISIBLE
                             }
                         }
 
