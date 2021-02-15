@@ -41,9 +41,16 @@ class ChatActivity : AppCompatActivity() {
     val db = FirebaseFirestore.getInstance()
     val mAuth = FirebaseAuth.getInstance()
     val chatRef = db.collection("ChatLists")
+    val chatRoomRef = db.collection("Chatrooms")
     val userRef = db.collection("Users")
 
+    var mAdapter : ChatAdapter? = null
+
     var chatList = arrayListOf<ChatData>()
+    var chatIDList = arrayListOf<String>()
+
+    var chated = false
+    var chatroomID = ""
 
     val PERMISSION_CODE = 1001
     val IMAGE_PICK_CODE = 1000
@@ -67,8 +74,20 @@ class ChatActivity : AppCompatActivity() {
         val storageRef = storage.getReferenceFromUrl("gs://trainingfield-ed0a1.appspot.com")
             .child("Profile/${receiver}.png")
 
-        storageRef.downloadUrl.addOnSuccessListener {
-            retrieveMessage(sender, receiver, it.toString())
+        chatRef.document(sender).collection("Channel")
+            .document(receiver).get().addOnSuccessListener {
+                if(it.exists()){
+                    Log.d(TAG, "Exists!")
+
+                    chated = true
+
+                    chatroomID = it.get("chatroomID").toString()
+
+                }
+            }
+
+        storageRef.downloadUrl.addOnSuccessListener {task ->
+            initMessageRecyclerView(task.toString())
         }
 
         et_chatboard_message.addTextChangedListener(object : TextWatcher{
@@ -88,46 +107,78 @@ class ChatActivity : AppCompatActivity() {
         })
 
         iv_chatboard_send.setOnClickListener {
-            val message = et_chatboard_message.text.toString()
+            if (!chated){
 
-            et_chatboard_message.text.clear()
+                chatroomID = chatRoomRef.document().id
 
-            val timestamp = Timestamp(Date())
+                val channelInfo = hashMapOf(
+                    "chatroomID" to chatroomID
+                )
 
-            val messageHashMap = hashMapOf<String, Any?>(
-                "message" to message,
-                "sender" to sender,
-                "receiver" to receiver,
-                "url" to "",
-                "timestamp" to timestamp
-            )
+                chatRef.document(sender).collection("Channel")
+                    .document(receiver).set(channelInfo)
 
-            val messageListHashMap = hashMapOf<String, Any?>(
-                "last" to message,
-                "timestamp" to timestamp
-            )
+                chatRef.document(receiver).collection("Channel")
+                    .document(sender).set(channelInfo)
 
-            val senderChatRef = chatRef.document(sender)
-                .collection("Chatrooms").document(receiver)
-
-            val receiverChatRef = chatRef.document(receiver)
-                .collection("Chatrooms").document(sender)
-
-            val randomId = senderChatRef.collection("Messages").document().id
-
-            senderChatRef.collection("Messages").document(randomId).set(messageHashMap).addOnSuccessListener {
-                senderChatRef.set(messageListHashMap)
+                sendMessage()
+            }else{
+                sendMessage()
             }
 
-            receiverChatRef.collection("Messages").document(randomId).set(messageHashMap).addOnSuccessListener {
-                receiverChatRef.set(messageListHashMap)
-            }
         }
 
         iv_chatboard_attachment.setOnClickListener {
             LN_chatboard_progress.visibility = View.VISIBLE
-            changePicture()
+            if (!chated){
+
+                chatroomID = chatRoomRef.document().id
+
+                val channelInfo = hashMapOf(
+                    "chatroomID" to chatroomID
+                )
+
+                chatRef.document(sender).collection("Channel")
+                    .document(receiver).set(channelInfo)
+
+                chatRef.document(receiver).collection("Channel")
+                    .document(sender).set(channelInfo)
+
+                changePicture()
+            }else{
+                changePicture()
+            }
         }
+    }
+
+    private fun sendMessage(){
+        val message = et_chatboard_message.text.toString()
+
+        et_chatboard_message.text.clear()
+
+        val timestamp = Timestamp(Date())
+        val randomID = chatRoomRef.document(chatroomID).collection("Messages").document().id
+
+        val messageHashMap = hashMapOf<String, Any?>(
+            "message" to message,
+            "sender" to sender,
+            "receiver" to receiver,
+            "url" to "",
+            "timestamp" to timestamp,
+            "messageID" to randomID
+        )
+
+        val messageListHashMap = hashMapOf<String, Any?>(
+            "last" to message,
+            "timestamp" to timestamp
+        )
+        chatRoomRef.document(chatroomID).set(messageListHashMap)
+        chatRoomRef.document(chatroomID).collection("Messages").document(randomID)
+            .set(messageHashMap)
+        chatRef.document(sender).collection("Channel")
+            .document(receiver).update(messageListHashMap)
+        chatRef.document(receiver).collection("Channel").document(sender)
+            .update(messageListHashMap)
     }
 
     private fun changePicture(){
@@ -158,34 +209,32 @@ class ChatActivity : AppCompatActivity() {
 
         Log.d(TAG, "start retrieve Message")
 
-        chatRef.document(sender).collection("Chatrooms")
-            .document(receiver).collection("Messages").
+        chatRoomRef.document(chatroomID).collection("Messages").
                 orderBy("timestamp", Query.Direction.ASCENDING).addSnapshotListener { value, error ->
-                if (error != null){
-                    return@addSnapshotListener
-                }
 
-                chatList = arrayListOf()
-
-                val mAdapter = ChatAdapter(this, chatList, profile)
-                rv_chatboard_chat.adapter = mAdapter
-                rv_chatboard_chat.layoutManager = LinearLayoutManager(applicationContext)
-
-                for(doc in value!!){
-                    val chat = ChatData(doc.get("message").toString(), doc.get("sender").toString(),
-                        doc.get("receiver").toString(), doc.get("url").toString(),
-                        doc.get("timestamp") as Timestamp)
-
-                    chatList.add(chat)
-
-                    mAdapter.notifyDataSetChanged()
-
-                    Log.d(TAG, "checkTimestamp : ${doc.get("timestamp") as Timestamp}")
-
-                }
-
-                Log.d(TAG, "chatList : $chatList")
+            if (error != null){
+                return@addSnapshotListener
             }
+
+            for(doc in value!!){
+                val chat = ChatData(doc.get("message").toString(), doc.get("sender").toString(),
+                    doc.get("receiver").toString(), doc.get("url").toString(),
+                    doc.get("timestamp") as Timestamp)
+
+                if(!chatIDList.contains(doc.get("messageID").toString())){
+                    chatList.add(chat)
+                    chatIDList.add(doc.get("messageID").toString())
+                    rv_chatboard_chat.smoothScrollToPosition(chatList.size - 1)
+                }
+
+                Log.d(TAG, "data added : ${chat.message}")
+
+            }
+
+            mAdapter!!.notifyDataSetChanged()
+
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -202,48 +251,39 @@ class ChatActivity : AppCompatActivity() {
             if(resultCode == Activity.RESULT_OK){
                 val resultUri = result.uri
 
-                val randomId = chatRef.document(sender)
-                    .collection("Chatrooms")
-                    .document(receiver).collection("Messages").document().id
-
                 val storageRef = storage.
                     getReferenceFromUrl("gs://trainingfield-ed0a1.appspot.com").
                     child("Message/${mAuth.uid.toString()}/${System.currentTimeMillis()}.png")
 
                 storageRef.putFile(resultUri).addOnSuccessListener {
                     storageRef.downloadUrl.addOnSuccessListener {
+                        val timestamp = Timestamp(Date())
+
+                        val randomID = chatRoomRef.document(chatroomID).collection("Messages").document().id
 
                         val messageHashMap = hashMapOf<String, Any?>(
                             "message" to "",
                             "sender" to sender,
                             "receiver" to receiver,
                             "url" to it.toString(),
-                            "timestamp" to FieldValue.serverTimestamp()
+                            "timestamp" to timestamp,
+                            "messageID" to randomID
                         )
 
                         Log.d(TAG, "result Uri : $it")
 
                         val messageListHashMap = hashMapOf<String, Any?>(
                             "last" to getString(R.string.picture),
-                            "timestamp" to FieldValue.serverTimestamp()
+                            "timestamp" to timestamp
                         )
-
-                        val senderChatRef = chatRef.document(sender)
-                            .collection("Chatrooms").document(receiver)
-
-                        val receiverChatRef = chatRef.document(receiver)
-                            .collection("Chatrooms").document(sender)
-
-                        senderChatRef.collection("Messages").document(randomId).set(messageHashMap).addOnSuccessListener {
-                            senderChatRef.set(messageListHashMap).addOnSuccessListener {
-                                LN_chatboard_progress.visibility = View.INVISIBLE
-                            }
-                        }
-
-                        receiverChatRef.collection("Messages").document(randomId).set(messageHashMap).addOnSuccessListener {
-                            receiverChatRef.set(messageListHashMap).addOnSuccessListener {
-                                LN_chatboard_progress.visibility = View.INVISIBLE
-                            }
+                        chatRef.document(sender).collection("Channel")
+                            .document(receiver).update(messageListHashMap)
+                        chatRef.document(receiver).collection("Channel").document(sender)
+                            .update(messageListHashMap)
+                        chatRoomRef.document(chatroomID).set(messageListHashMap)
+                        chatRoomRef.document(chatroomID).collection("Messages").document(randomID)
+                            .set(messageHashMap).addOnSuccessListener {
+                            LN_chatboard_progress.visibility = View.INVISIBLE
                         }
 
                     }
@@ -274,5 +314,27 @@ class ChatActivity : AppCompatActivity() {
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    private fun initMessageRecyclerView(profile : String){
+        mAdapter = ChatAdapter(this, chatList, profile)
+        mAdapter!!.setHasStableIds(true)
+        rv_chatboard_chat.adapter = mAdapter
+        rv_chatboard_chat.layoutManager = LinearLayoutManager(applicationContext)
+        rv_chatboard_chat.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            if (bottom < oldBottom) {
+                rv_chatboard_chat.postDelayed(object : Runnable{
+                    override fun run() {
+                        if(chatList.size > 0){
+                            rv_chatboard_chat.smoothScrollToPosition(
+                                rv_chatboard_chat.adapter!!.itemCount - 1
+                            )
+                        }
+                    }
+                }, 100)
+            }
+        }
+
+        retrieveMessage(sender, receiver, profile)
     }
 }

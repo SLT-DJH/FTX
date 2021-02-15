@@ -135,9 +135,12 @@ class ChatAdapter(val mContext : Context, val chatList : ArrayList<ChatData>, va
 
     }
 
-    override fun getItemViewType(position: Int): Int {
+    override fun getItemId(position: Int): Long {
+        Log.d(TAG, "item ID : ${position.toLong()}, ${chatList[position].message}")
+        return position.toLong()
+    }
 
-        Log.d(TAG, "start getItemViewType")
+    override fun getItemViewType(position: Int): Int {
 
         return if (chatList[position].sender == firebaseUser.uid){
             1

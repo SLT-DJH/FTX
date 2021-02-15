@@ -29,7 +29,9 @@ class ChatFragment : Fragment() , ChatListAdapter.OnItemClickListener{
     val mAuth = FirebaseAuth.getInstance()
     val userRef = db.collection("Users")
     val chatlistRef = db.collection("ChatLists").document(mAuth.currentUser!!.uid)
-        .collection("Chatrooms")
+        .collection("Channel")
+
+    var chatroomID = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_chat, container, false)
