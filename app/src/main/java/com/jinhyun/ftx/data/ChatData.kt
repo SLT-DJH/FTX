@@ -9,5 +9,5 @@ class ChatData (
     val sender : String,
     val receiver : String,
     val url : String,
-     val timestamp: Timestamp
+    val timestamp: Timestamp
 )

@@ -15,8 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.jinhyun.ftx.R
 import com.jinhyun.ftx.data.ChatData
-import com.jinhyun.ftx.model.Chat
-import kotlinx.android.synthetic.main.message_item_left.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -57,8 +55,6 @@ class ChatAdapter(val mContext : Context, val chatList : ArrayList<ChatData>, va
         val left_linear_text = itemView.findViewById<LinearLayout>(R.id.LN_message_left_layout)
         val right_linear_text = itemView.findViewById<LinearLayout>(R.id.LN_message_right_layout)
         val message_text = itemView.findViewById<TextView>(R.id.tv_message)
-        val left_card_image = itemView.findViewById<CardView>(R.id.card_message_left_image)
-        val right_card_image = itemView.findViewById<CardView>(R.id.card_message_right_image)
         val left_image = itemView.findViewById<ImageView>(R.id.iv_message_left_image)
         val right_image = itemView.findViewById<ImageView>(R.id.iv_message_right_image)
         val left_linear_image = itemView.findViewById<LinearLayout>(R.id.LN_image_message_left)
@@ -136,7 +132,6 @@ class ChatAdapter(val mContext : Context, val chatList : ArrayList<ChatData>, va
     }
 
     override fun getItemId(position: Int): Long {
-        Log.d(TAG, "item ID : ${position.toLong()}, ${chatList[position].message}")
         return position.toLong()
     }
 

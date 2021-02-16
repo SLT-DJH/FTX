@@ -55,22 +55,6 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginRight="10dp"
-                app:cardCornerRadius="81dp"
-                app:cardElevation="0dp">
-
-                <ImageView
-                    android:id="@+id/iv_post_profile_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/default_profile" />
-
-            </androidx.cardview.widget.CardView>
-
             <TextView
                 android:id="@+id/tv_post_name"
                 android:layout_width="wrap_content"
@@ -96,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/default_back" />
+            android:visibility="gone" />
 
     </LinearLayout>
 

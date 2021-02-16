@@ -9,27 +9,20 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.storage.FirebaseStorage
 import com.jinhyun.ftx.adapter.ChatAdapter
 import com.jinhyun.ftx.data.ChatData
-import com.jinhyun.ftx.model.Chat
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import io.grpc.Server
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.lang.RuntimeException
 import java.util.*
@@ -77,7 +70,6 @@ class ChatActivity : AppCompatActivity() {
         chatRef.document(sender).collection("Channel")
             .document(receiver).get().addOnSuccessListener {
                 if(it.exists()){
-                    Log.d(TAG, "Exists!")
 
                     chated = true
 
@@ -207,8 +199,6 @@ class ChatActivity : AppCompatActivity() {
 
     private fun retrieveMessage(sender : String, receiver : String, profile : String){
 
-        Log.d(TAG, "start retrieve Message")
-
         chatRoomRef.document(chatroomID).collection("Messages").
                 orderBy("timestamp", Query.Direction.ASCENDING).addSnapshotListener { value, error ->
 
@@ -226,8 +216,6 @@ class ChatActivity : AppCompatActivity() {
                     chatIDList.add(doc.get("messageID").toString())
                     rv_chatboard_chat.smoothScrollToPosition(chatList.size - 1)
                 }
-
-                Log.d(TAG, "data added : ${chat.message}")
 
             }
 
@@ -269,8 +257,6 @@ class ChatActivity : AppCompatActivity() {
                             "timestamp" to timestamp,
                             "messageID" to randomID
                         )
-
-                        Log.d(TAG, "result Uri : $it")
 
                         val messageListHashMap = hashMapOf<String, Any?>(
                             "last" to getString(R.string.picture),
@@ -317,23 +303,13 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun initMessageRecyclerView(profile : String){
+
         mAdapter = ChatAdapter(this, chatList, profile)
         mAdapter!!.setHasStableIds(true)
         rv_chatboard_chat.adapter = mAdapter
-        rv_chatboard_chat.layoutManager = LinearLayoutManager(applicationContext)
-        rv_chatboard_chat.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-            if (bottom < oldBottom) {
-                rv_chatboard_chat.postDelayed(object : Runnable{
-                    override fun run() {
-                        if(chatList.size > 0){
-                            rv_chatboard_chat.smoothScrollToPosition(
-                                rv_chatboard_chat.adapter!!.itemCount - 1
-                            )
-                        }
-                    }
-                }, 100)
-            }
-        }
+        var LN = LinearLayoutManager(applicationContext)
+        LN.stackFromEnd = true
+        rv_chatboard_chat.layoutManager = LN
 
         retrieveMessage(sender, receiver, profile)
     }

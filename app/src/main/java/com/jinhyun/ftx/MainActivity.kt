@@ -104,7 +104,11 @@ class MainActivity : AppCompatActivity() {
 
             }
             1 -> {
-                ft.replace(R.id.container, GroupFragment()).commit()
+                ft.replace(R.id.container, GroupFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("base", userBase)
+                    }
+                }).commit()
                 iv_mission.setImageResource(R.drawable.assignment_white)
                 iv_group.setImageResource(R.drawable.group_black)
                 iv_chat.setImageResource(R.drawable.chat_white)
