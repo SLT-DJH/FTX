@@ -5,5 +5,6 @@ class GroupData (
     val postText : String,
     val postImage : String,
     val timestamp : com.google.firebase.Timestamp,
-    val nameText : String
+    val nameText : String,
+    val postID : String
 )

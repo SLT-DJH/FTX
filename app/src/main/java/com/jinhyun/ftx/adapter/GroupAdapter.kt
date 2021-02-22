@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 import com.jinhyun.ftx.R
 import com.jinhyun.ftx.data.GroupData
 import kotlinx.android.synthetic.main.custom_group_list.view.*
@@ -17,8 +20,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>) :
+class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>, val listener : OnItemClickListener, val base : String) :
     RecyclerView.Adapter<GroupAdapter.Holder>(){
+
+    val db = FirebaseFirestore.getInstance()
+    val postRef = db.collection("Missions").document(base).collection("Posts")
+    val mAuth = FirebaseAuth.getInstance()
 
     val TAG = "GroupAdapter"
 
@@ -32,10 +39,23 @@ class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>) 
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(postList[position], mcontext)
+        val item = postList[position]
+
+        holder.bind(item, mcontext)
+
+        holder.postLikeLN.setOnClickListener {
+            if(holder.postLikeText.text == "좋아요") {
+                postRef.document(item.postID).collection("Likes")
+                    .document(mAuth.uid.toString()).set({})
+            }else{
+                postRef.document(item.postID).collection("Likes")
+                    .document(mAuth.uid.toString()).delete()
+            }
+
+        }
     }
 
-    inner class Holder(itemView : View) : RecyclerView.ViewHolder(itemView){
+    inner class Holder(itemView : View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
         val postCategory = itemView.findViewById<TextView>(R.id.tv_post_category)
         val postDate = itemView.findViewById<TextView>(R.id.tv_update_date)
         val userName = itemView.findViewById<TextView>(R.id.tv_post_name)
@@ -43,7 +63,15 @@ class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>) 
         val postImage = itemView.findViewById<ImageView>(R.id.iv_post_image)
 
         val postLike = itemView.findViewById<ImageView>(R.id.iv_post_like)
+        val postLikeText = itemView.findViewById<TextView>(R.id.tv_post_like)
         val postComment = itemView.findViewById<ImageView>(R.id.iv_post_comment)
+        val postCommentText = itemView.findViewById<TextView>(R.id.tv_post_comment)
+
+        val postLikeLN = itemView.findViewById<LinearLayout>(R.id.LN_post_like)
+        val postCommentLN = itemView.findViewById<LinearLayout>(R.id.LN_post_comment)
+
+        val postLikeNum = itemView.findViewById<TextView>(R.id.tv_post_like_num)
+        val postCommentNum = itemView.findViewById<TextView>(R.id.tv_post_comment_num)
 
         fun bind(group : GroupData, context: Context){
             postCategory.text = group.categoryText
@@ -53,7 +81,7 @@ class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>) 
                 Glide.with(mcontext).load(group.postImage).into(postImage)
                 postImage.visibility = View.VISIBLE
             }
-            postLike.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+            initLike(group.postID, postLike, postLikeText, postLikeNum)
             postComment.setImageResource(R.drawable.ic_chat_bubble_outline_black_24dp)
 
             val currentCal = Calendar.getInstance()
@@ -82,6 +110,55 @@ class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>) 
                 postDate.text = "$selectedYear. $selectedMonth. $selectedDay."
             }
         }
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION){
+                listener.onItemClick(position)
+            }
+        }
+    }
+
+    private fun initLike(postID : String, imageView : ImageView, textView : TextView, numTextView : TextView){
+        //is like?
+        postRef.document(postID).collection("Likes").document(mAuth.uid.toString())
+            .addSnapshotListener { value, error ->
+                if(error != null){
+                    return@addSnapshotListener
+                }
+
+                if (value != null && value.exists()){
+                    imageView.setImageResource(R.drawable.ic_favorite_red_24dp)
+                    textView.text = "좋아함"
+                    textView.setTextColor(ContextCompat.getColor(mcontext, R.color.red3))
+                }else{
+                    imageView.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+                    textView.text = "좋아요"
+                    textView.setTextColor(ContextCompat.getColor(mcontext, R.color.DarkGrey))
+                }
+            }
+
+        //num like
+        postRef.document(postID).collection("Likes").addSnapshotListener { value, error ->
+            if (error != null){
+                return@addSnapshotListener
+            }
+
+            if (value != null){
+                val size = value.size()
+                numTextView.text = "좋아요 $size"
+            }else{
+                numTextView.text = "좋아요 0"
+            }
+        }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(position : Int)
     }
 
     override fun getItemId(position: Int): Long {

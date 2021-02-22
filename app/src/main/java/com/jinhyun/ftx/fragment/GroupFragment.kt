@@ -14,11 +14,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.jinhyun.ftx.NewPostActivity
 import com.jinhyun.ftx.R
+import com.jinhyun.ftx.SelectedPostActivity
 import com.jinhyun.ftx.adapter.GroupAdapter
 import com.jinhyun.ftx.data.GroupData
 import kotlinx.android.synthetic.main.fragment_group.view.*
 
-class GroupFragment : Fragment() {
+class GroupFragment : Fragment(), GroupAdapter.OnItemClickListener {
 
     var groupList = arrayListOf<GroupData>()
 
@@ -26,6 +27,7 @@ class GroupFragment : Fragment() {
 
     val db = FirebaseFirestore.getInstance()
     val userRef = db.collection("Users")
+    var base = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_group, container, false)
@@ -33,16 +35,19 @@ class GroupFragment : Fragment() {
         activity?.findViewById<TextView>(R.id.toolbar_title)?.setText(R.string.group)
 
         setHasOptionsMenu(true)
+
+        base = arguments?.getString("base").toString()
+
         // postref 설정
         val postRef = db.collection("Missions")
-            .document(arguments?.getString("base").toString()).collection("Posts")
+            .document(base).collection("Posts")
 
-        val mAdapter = GroupAdapter(activity!!.applicationContext, groupList)
-        mAdapter.setHasStableIds(true)
-        view.groupRecyclerView.adapter = mAdapter
-
-        val lm = LinearLayoutManager(activity!!.applicationContext)
-        view.groupRecyclerView.layoutManager = lm
+//        val mAdapter = GroupAdapter(activity!!.applicationContext, groupList, this)
+//        mAdapter.setHasStableIds(true)
+//        view.groupRecyclerView.adapter = mAdapter
+//
+//        val lm = LinearLayoutManager(activity!!.applicationContext)
+//        view.groupRecyclerView.layoutManager = lm
 
         postRef.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnSuccessListener { document ->
             if(document.isEmpty){
@@ -51,7 +56,7 @@ class GroupFragment : Fragment() {
 
             groupList = arrayListOf()
 
-            val mAdapter = GroupAdapter(activity!!.applicationContext, groupList)
+            val mAdapter = GroupAdapter(activity!!.applicationContext, groupList, this, base)
             mAdapter.setHasStableIds(true)
             view.groupRecyclerView.adapter = mAdapter
             view.groupRecyclerView.layoutManager = LinearLayoutManager(activity!!.applicationContext)
@@ -61,7 +66,8 @@ class GroupFragment : Fragment() {
                     val name = it.get("name").toString()
 
                     val post = GroupData(doc.get("category").toString(), doc.get("content").toString(),
-                        doc.get("imageurl").toString(), doc.getTimestamp("timestamp") as Timestamp, name)
+                        doc.get("imageurl").toString(), doc.getTimestamp("timestamp") as Timestamp,
+                        name, doc.get("postID").toString())
 
                     groupList.add(post)
                     Log.d(TAG, "added! $groupList")
@@ -100,5 +106,17 @@ class GroupFragment : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onItemClick(position: Int) {
+        val clickedItem = groupList[position]
+
+        val intent = Intent(activity, SelectedPostActivity::class.java)
+        intent.putExtra("category", clickedItem.categoryText)
+        intent.putExtra("name", clickedItem.nameText)
+        intent.putExtra("imageUrl", clickedItem.postImage)
+        intent.putExtra("content", clickedItem.postText)
+        intent.putExtra("time", clickedItem.timestamp)
+        startActivity(intent)
     }
 }
