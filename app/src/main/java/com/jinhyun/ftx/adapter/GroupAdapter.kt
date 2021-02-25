@@ -1,19 +1,26 @@
 package com.jinhyun.ftx.adapter
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.jinhyun.ftx.MainActivity
 import com.jinhyun.ftx.R
+import com.jinhyun.ftx.SelectedPostActivity
 import com.jinhyun.ftx.data.GroupData
 import kotlinx.android.synthetic.main.custom_group_list.view.*
 import java.text.SimpleDateFormat
@@ -52,6 +59,22 @@ class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>, 
                     .document(mAuth.uid.toString()).delete()
             }
 
+        }
+
+        holder.postCommentLN.setOnClickListener {
+            val intent = Intent(mcontext, SelectedPostActivity::class.java)
+
+            intent.putExtra("category", item.categoryText)
+            intent.putExtra("name", item.nameText)
+            intent.putExtra("imageUrl", item.postImage)
+            intent.putExtra("content", item.postText)
+            intent.putExtra("time", holder.postDate.text)
+            intent.putExtra("postID", item.postID)
+            intent.putExtra("base", base)
+            intent.putExtra("writerID", item.writerID)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            mcontext.startActivity(intent)
         }
     }
 
@@ -118,7 +141,7 @@ class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>, 
         override fun onClick(v: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION){
-                listener.onItemClick(position)
+                listener.onItemClick(position, v!!)
             }
         }
     }
@@ -158,7 +181,7 @@ class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>, 
     }
 
     interface OnItemClickListener {
-        fun onItemClick(position : Int)
+        fun onItemClick(position : Int, view : View)
     }
 
     override fun getItemId(position: Int): Long {

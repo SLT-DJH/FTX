@@ -142,5 +142,11 @@
     <string name="yesterday">어제</string>
     <string name="the_day_before_yesterday">그저께</string>
 
+    <string name="report_post">게시글 신고</string>
+    <string name="report_post_info">해당 게시글을 신고하시겠습니까?</string>
+    <string name="report_post_complete">게시글을 신고하였습니다.</string>
+
+    <string name="input_comment">댓글을 입력하세요.</string>
+
 
 </resources>

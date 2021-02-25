@@ -17,6 +17,7 @@ import com.jinhyun.ftx.R
 import com.jinhyun.ftx.SelectedPostActivity
 import com.jinhyun.ftx.adapter.GroupAdapter
 import com.jinhyun.ftx.data.GroupData
+import kotlinx.android.synthetic.main.custom_group_list.view.*
 import kotlinx.android.synthetic.main.fragment_group.view.*
 
 class GroupFragment : Fragment(), GroupAdapter.OnItemClickListener {
@@ -67,7 +68,7 @@ class GroupFragment : Fragment(), GroupAdapter.OnItemClickListener {
 
                     val post = GroupData(doc.get("category").toString(), doc.get("content").toString(),
                         doc.get("imageurl").toString(), doc.getTimestamp("timestamp") as Timestamp,
-                        name, doc.get("postID").toString())
+                        name, doc.get("postID").toString(), doc.get("writer").toString())
 
                     groupList.add(post)
                     Log.d(TAG, "added! $groupList")
@@ -108,7 +109,7 @@ class GroupFragment : Fragment(), GroupAdapter.OnItemClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onItemClick(position: Int) {
+    override fun onItemClick(position: Int, view : View) {
         val clickedItem = groupList[position]
 
         val intent = Intent(activity, SelectedPostActivity::class.java)
@@ -116,7 +117,10 @@ class GroupFragment : Fragment(), GroupAdapter.OnItemClickListener {
         intent.putExtra("name", clickedItem.nameText)
         intent.putExtra("imageUrl", clickedItem.postImage)
         intent.putExtra("content", clickedItem.postText)
-        intent.putExtra("time", clickedItem.timestamp)
+        intent.putExtra("time", view.tv_update_date.text)
+        intent.putExtra("postID", clickedItem.postID)
+        intent.putExtra("base", base)
+        intent.putExtra("writerID", clickedItem.writerID)
         startActivity(intent)
     }
 }

@@ -37,15 +37,6 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_update_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="@string/update_date"
-                android:textColor="@color/transparentGrey"
-                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -53,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_post_name"
@@ -64,6 +55,16 @@
                 android:textColor="@color/Black"
                 android:textSize="15sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_update_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/update_date"
+                android:textColor="@color/transparentGrey"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <TextView
