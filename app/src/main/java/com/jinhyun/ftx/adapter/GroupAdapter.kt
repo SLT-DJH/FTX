@@ -48,7 +48,7 @@ class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>, 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = postList[position]
 
-        holder.bind(item, mcontext)
+        holder.bind(item)
 
         holder.postLikeLN.setOnClickListener {
             if(holder.postLikeText.text == "좋아요") {
@@ -96,7 +96,7 @@ class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>, 
         val postLikeNum = itemView.findViewById<TextView>(R.id.tv_post_like_num)
         val postCommentNum = itemView.findViewById<TextView>(R.id.tv_post_comment_num)
 
-        fun bind(group : GroupData, context: Context){
+        fun bind(group : GroupData){
             postCategory.text = group.categoryText
             userName.text = group.nameText
             postContent.text = group.postText
@@ -105,6 +105,7 @@ class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>, 
                 postImage.visibility = View.VISIBLE
             }
             initLike(group.postID, postLike, postLikeText, postLikeNum)
+            initComment(group.postID, postCommentNum)
             postComment.setImageResource(R.drawable.ic_chat_bubble_outline_black_24dp)
 
             val currentCal = Calendar.getInstance()
@@ -176,6 +177,21 @@ class GroupAdapter(val mcontext : Context, val postList : ArrayList<GroupData>, 
                 numTextView.text = "좋아요 $size"
             }else{
                 numTextView.text = "좋아요 0"
+            }
+        }
+    }
+
+    private fun initComment(postID : String, numTextView : TextView){
+        postRef.document(postID).collection("Comments").addSnapshotListener { value, error ->
+            if (error != null){
+                return@addSnapshotListener
+            }
+
+            if (value != null){
+                val size = value.size()
+                numTextView.text = "댓글 $size"
+            }else{
+                numTextView.text = "댓글 0"
             }
         }
     }

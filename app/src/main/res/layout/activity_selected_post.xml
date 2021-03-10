@@ -256,8 +256,9 @@
                         android:background="@color/lightGrey" />
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_selected_post_comment"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <View
                         android:layout_width="match_parent"
@@ -273,11 +274,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:elevation="5dp"
                 android:background="@color/White"
-                android:padding="13dp"
+                android:elevation="5dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="13dp"
+                android:visibility="visible">
 
                 <EditText
                     android:id="@+id/et_selected_post_comment"
@@ -297,6 +299,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:tint="@color/military"
+                    android:visibility="gone"
                     app:srcCompat="@drawable/ic_send_black_24dp" />
             </LinearLayout>
 

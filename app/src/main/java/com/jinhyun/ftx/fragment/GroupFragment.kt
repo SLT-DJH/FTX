@@ -29,6 +29,7 @@ class GroupFragment : Fragment(), GroupAdapter.OnItemClickListener {
     val db = FirebaseFirestore.getInstance()
     val userRef = db.collection("Users")
     var base = ""
+    var userprofile = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_group, container, false)

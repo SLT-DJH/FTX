@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             if(value != null && value.exists()){
                 userName = value.get("name").toString()
                 userBase = value.get("base").toString()
+                userImage = value.get("profile").toString()
                 if (value.get("access") == true){
                     userAcess = true
                     Log.d(TAG, "user access true!!")
@@ -95,6 +96,9 @@ class MainActivity : AppCompatActivity() {
                 ft.replace(R.id.container, MissionFragment().apply {
                     arguments = Bundle().apply {
                         putString("base", userBase)
+                        putString("profile", userImage)
+                        putBoolean("access", userAcess)
+                        putString("name", userName)
                     }
                 }).commit()
                 iv_mission.setImageResource(R.drawable.assignment_black)
@@ -107,6 +111,9 @@ class MainActivity : AppCompatActivity() {
                 ft.replace(R.id.container, GroupFragment().apply {
                     arguments = Bundle().apply {
                         putString("base", userBase)
+                        putString("profile", userImage)
+                        putBoolean("access", userAcess)
+                        putString("name", userName)
                     }
                 }).commit()
                 iv_mission.setImageResource(R.drawable.assignment_white)
@@ -115,7 +122,14 @@ class MainActivity : AppCompatActivity() {
                 iv_profile.setImageResource(R.drawable.profile_white)
             }
             2 -> {
-                ft.replace(R.id.container, ChatFragment()).commit()
+                ft.replace(R.id.container, ChatFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("base", userBase)
+                        putString("profile", userImage)
+                        putBoolean("access", userAcess)
+                        putString("name", userName)
+                    }
+                }).commit()
                 iv_mission.setImageResource(R.drawable.assignment_white)
                 iv_group.setImageResource(R.drawable.group_white)
                 iv_chat.setImageResource(R.drawable.chat_black)
@@ -126,6 +140,7 @@ class MainActivity : AppCompatActivity() {
                     arguments = Bundle().apply {
                         putString("name", userName)
                         putBoolean("access", userAcess)
+                        putString("profile", userImage)
                     }
                 }).commit()
                 iv_mission.setImageResource(R.drawable.assignment_white)

@@ -33,6 +33,7 @@ class ProfileFragment : Fragment() {
     val storage = FirebaseStorage.getInstance()
     val storageRef = storage.getReferenceFromUrl("gs://trainingfield-ed0a1.appspot.com")
         .child("Profile/${mAuth.currentUser?.uid.toString()}.png")
+    var userprofile = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
@@ -46,27 +47,12 @@ class ProfileFragment : Fragment() {
             view.tv_profile_access.visibility = View.GONE
         }
 
+        userprofile = arguments?.getString("profile").toString()
+
         //retrieve profile image
         val profileImage = view.findViewById<ImageView>(R.id.iv_profile_image)
 
-        userref.addSnapshotListener { value, error ->
-            if(error != null){
-                return@addSnapshotListener
-            }
-
-            if(value!!.get("profile") != ""){
-                Glide.with(activity!!.applicationContext).load(value!!.get("profile")).into(profileImage)
-            }else{
-                profileImage.setImageResource(R.drawable.default_profile)
-            }
-        }
-
-//        storageRef.downloadUrl.addOnSuccessListener { task ->
-//            context?.let {
-//                Glide.with(it).load(task).into(profileImage)
-//                Log.d(TAG, "result : $task")
-//            }
-//        }
+        Glide.with(activity!!.applicationContext).load(userprofile).into(profileImage)
 
         view.tv_profile_access.setOnClickListener {
             Toast.makeText(activity, "프로필 인증 절차 ㄱ", Toast.LENGTH_SHORT).show()
