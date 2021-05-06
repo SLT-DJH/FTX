@@ -2,7 +2,7 @@ package com.jinhyun.ftx.data
 
 import com.google.firebase.Timestamp
 
-class ChatListData(
+data class ChatListData(
     val profileImage : String,
     val nameText : String,
     val baseText : String,

@@ -133,7 +133,7 @@ class MissionFragment : Fragment(), MissionAdapter.OnItemClickListener {
 
     }
 
-    override fun onItemClick(position: Int) {
+    override fun onMissionItemClick(position: Int) {
         val clickedItem = missionList[position]
 
         val intent = Intent(activity, SelectedMissionActivity::class.java)

@@ -1,6 +1,6 @@
 package com.jinhyun.ftx.data
 
-class GroupData (
+data class GroupData (
     val categoryText : String,
     val postText : String,
     val postImage : String,

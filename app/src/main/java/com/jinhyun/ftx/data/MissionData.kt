@@ -1,6 +1,6 @@
 package com.jinhyun.ftx.data
 
-class MissionData(
+data class MissionData(
     val missionImage : String,
     val missionText : String,
     val placeText : String,

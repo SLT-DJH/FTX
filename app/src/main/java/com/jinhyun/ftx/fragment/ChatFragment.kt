@@ -2,6 +2,7 @@ package com.jinhyun.ftx.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -31,7 +32,7 @@ class ChatFragment : Fragment() , ChatListAdapter.OnItemClickListener{
     val chatlistRef = db.collection("ChatLists").document(mAuth.currentUser!!.uid)
         .collection("Channel")
 
-    var chatroomID = ""
+    var TAG = "ChatFragment"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_chat, container, false)
@@ -85,6 +86,7 @@ class ChatFragment : Fragment() , ChatListAdapter.OnItemClickListener{
     }
 
     override fun onChatItemClick(position: Int) {
+        Log.d(TAG, "started onChatItemClick")
         val clickItem = chatlistList[position]
 
         val intent = Intent(activity, ChatActivity::class.java)

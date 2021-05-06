@@ -58,7 +58,7 @@ class GroupFragment : Fragment(), GroupAdapter.OnItemClickListener {
 
             groupList = arrayListOf()
 
-            val mAdapter = GroupAdapter(activity!!.applicationContext, groupList, this, base)
+            val mAdapter = GroupAdapter(activity!!.applicationContext, groupList, base, this)
             mAdapter.setHasStableIds(true)
             view.groupRecyclerView.adapter = mAdapter
             view.groupRecyclerView.layoutManager = LinearLayoutManager(activity!!.applicationContext)
@@ -110,7 +110,7 @@ class GroupFragment : Fragment(), GroupAdapter.OnItemClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onItemClick(position: Int, view : View) {
+    override fun onGroupItemClick(position: Int, view : View) {
         val clickedItem = groupList[position]
 
         val intent = Intent(activity, SelectedPostActivity::class.java)
